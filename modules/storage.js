@@ -28,5 +28,11 @@ const removeData = async (key) => {
         console.error('Error removing data', e);
     }
 };
-
-export { storeData, getData, removeData };
+const clearData = async () => {
+    try {
+        await AsyncStorage.clear();
+    } catch (e) {
+        console.log(err);
+    }
+};
+export { storeData, getData, removeData, clearData };

@@ -1,5 +1,6 @@
 import ProjectCard from '../components/ProjectCard';
 import { collection, getDoc, where, doc } from 'firebase/firestore';
+import { storeData } from './storage';
 
 export default getUserProjects = async (db, uid) => {
     const userRef = doc(db, 'user', uid);
@@ -21,6 +22,8 @@ export default getUserProjects = async (db, uid) => {
         } else {
             console.log('유저가 존재하지 않습니다.');
         }
+        console.log(projectsData, '데이터추가');
+        await storeData('PROJECT_DATA', projectsData);
     } catch (err) {
         console.log(err);
     }

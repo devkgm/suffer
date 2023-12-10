@@ -8,7 +8,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import getUserProjects from '../modules/getUserProjects';
 import { useEffect, useState } from 'react';
 import { auth, db } from '../firebase/firebaseConfig';
-import { getData } from '../modules/storage';
+import { getData, storeData } from '../modules/storage';
+
 const Tap = createBottomTabNavigator();
 
 export default function ProjectList() {
@@ -16,9 +17,17 @@ export default function ProjectList() {
 
     useEffect(() => {
         const loadProjects = async () => {
-            const uid = await getData('UID');
-            const projectsData = await getUserProjects(db, uid);
-            setProjects(projectsData);
+            const projectsData = await getData('PROJECT_DATA');
+            console.log(projectsData);
+            if (projectsData) {
+                console.log('dk');
+                setProjects(projectsData);
+            } else {
+                console.log('adsfa');
+                const uid = await getData('UID');
+                const projectsData = await getUserProjects(db, uid);
+                setProjects(projectsData);
+            }
         };
         loadProjects();
     }, []);

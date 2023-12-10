@@ -1,5 +1,5 @@
 import ProjectCard from '../components/ProjectCard';
-import { collection, getDoc, where, doc } from 'firebase/firestore';
+import { collection, getDoc, where, doc, orderBy, query, getDocs } from 'firebase/firestore';
 
 export default getProjectTasks = async (db, projectId) => {
     const projectRef = doc(db, 'project', projectId);
@@ -16,6 +16,9 @@ export default getProjectTasks = async (db, projectId) => {
                         taskData.push(taskSnapshot.data());
                     }
                 }
+                taskData.sort((a, b) => {
+                    return b.Date.seconds - a.Date.seconds;
+                });
             } else {
                 console.log('테스크 레퍼런스가 없습니다.');
             }

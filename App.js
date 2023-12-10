@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { AppState, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import First from './views/First';
 import ProjectList from './views/ProjectList';
 import Work from './views/Work';
@@ -21,11 +21,14 @@ import TaskCard from './components/TaskCard';
 import Registration from './views/Registration';
 import { auth } from './firebase/firebaseConfig';
 import SetInfomation from './views/SetInfomation';
-import { getData } from './modules/storage';
+import { getData, storeData } from './modules/storage';
 import CustomStack from './components/CustomStack';
 import CustomTab from './components/CustomTab';
 import Project from './views/Project';
 import CreateTask from './views/CreateTask';
+import { db } from './firebase/firebaseConfig';
+import getUserProjects from './modules/getUserProjects';
+
 LogBox.ignoreLogs(['Sending `onAnimatedValueUpdate` with no listeners registered.']);
 
 const Tap = createBottomTabNavigator();
@@ -48,34 +51,39 @@ export default function App() {
             }
         };
         checkLoginState();
+        const loadProjects = async () => {
+            const uid = await getData('UID');
+            const projectsData = await getUserProjects(db, uid);
+        };
+        const checkData = async () => {
+            const data = await getData('PROJECT_DATA');
+            console.log(data, '데이터 체크');
+            if (data) {
+                return true;
+            }
+            return false;
+        };
+        console.log(isLogined, checkData());
+        if (isLogined && !checkData()) {
+            console.log('loadProjects');
+            loadProjects();
+        }
     }, []);
+
     const setLogin = () => {
         setIsLogined(true);
+    };
+    const LogOut = () => {
+        setIsLogined(false);
     };
     const values = {
         uid: 'QyuJA1y5P9Zl1yIMTWKplHErAGi1',
         name: '김경모',
         isLogined: isLogined,
         setLogin,
+        LogOut,
     };
-    // const customTabs = CustomTab([
-    //     <Tap.Screen
-    //         name="프로젝트리스트"
-    //         component={ProjectList}
-    //         options={{
-    //             headerShown: false,
-    //             tabBarIcon: ({ color }) => <Icon name="folder" color={color} size={20} />,
-    //         }}
-    //     />,
-    //     <Tap.Screen
-    //         name="프로젝트"
-    //         component={Project}
-    //         options={{
-    //             headerShown: false,
-    //             tabBarIcon: ({ color }) => <Icon name="folder" color={color} size={20} />,
-    //         }}
-    //     />,
-    // ]);
+
     const Tabnavigator = () => (
         <Tap.Navigator
             initialRouteName="ProjectList"
@@ -162,17 +170,17 @@ export default function App() {
                 ) : (
                     <Stack.Navigator initialRouteName="First">
                         <Stack.Screen
-                            name="첫화면"
+                            name="First"
                             component={First}
                             options={{ headerShown: false }}
                         />
                         <Stack.Screen
-                            name="로그인"
+                            name="Login"
                             component={Login}
                             options={{ headerShown: false }}
                         />
                         <Stack.Screen
-                            name="회원가입"
+                            name="Registration"
                             component={Registration}
                             options={{ headerShown: false }}
                         />

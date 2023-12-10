@@ -6,10 +6,10 @@ import LongButton from '../components/LongButton';
 const First = ({ navigation }) => {
     const myContext = useContext(AppContext);
     const handleLogin = () => {
-        navigation.navigate('로그인');
+        navigation.navigate('Login');
     };
     const handleRegister = () => {
-        navigation.navigate('회원가입');
+        navigation.navigate('Registration');
     };
     useEffect(() => {}, [myContext.isLogined]);
     return (

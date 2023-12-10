@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Order from './Order';
 import Comment from './Comment';
@@ -12,7 +12,8 @@ function TaskCard({
     taskTime,
     taskComment,
 }) {
-    const date = taskTime.toDate().toLocaleDateString('ko-KR');
+    let date = new Date(taskTime.seconds * 1000).toLocaleString('ko-KR');
+
     return (
         <TouchableOpacity style={styles.container}>
             <View style={styles.header}>
@@ -26,6 +27,8 @@ function TaskCard({
                 </TouchableOpacity>
             </View>
             <View style={styles.body}>
+                <Text style={styles.title}>{taskTitle}</Text>
+
                 <Text>{taskTitle}</Text>
                 <Order />
             </View>
@@ -49,6 +52,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 10,
+        paddingBottom: 10,
+        borderBottomColor: 'lightgray',
+        borderBottomWidth: 1,
     },
     info: {},
     status: {
@@ -67,12 +73,17 @@ const styles = StyleSheet.create({
     author: {
         fontSize: 16,
         fontWeight: 'bold',
+        marginBottom: 3,
     },
     date: {
         fontSize: 12,
-        color: 'grey',
+        color: 'gray',
     },
-    title: {},
+    title: {
+        marginBottom: 10,
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
     description: {},
     body: {
         margin: 10,

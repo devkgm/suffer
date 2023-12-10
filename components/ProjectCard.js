@@ -7,7 +7,7 @@ const ProjectCard = ({ title, cardColor, userCount, isBookmarked, projectId }) =
     const cardWidth = screenWidth * 0.5 - 20; // 화면 너비의 절반
     const navigation = useNavigation();
     const handlePressProject = () => {
-        navigation.navigate('프로젝트', { projectId: projectId });
+        navigation.navigate('프로젝트', { projectId: projectId, projectTitle: title });
     };
     const onBookmarkPress = ({}) => {};
     return (

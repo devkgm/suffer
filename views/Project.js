@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
     SafeAreaView,
     View,
@@ -14,15 +14,38 @@ import { db } from '../firebase/firebaseConfig';
 import { doc, getDoc } from 'firebase/firestore';
 import getProjectTasks from '../modules/getProjectTasks';
 import { useNavigation } from '@react-navigation/native';
+import { getData, removeData, storeData } from '../modules/storage';
+import { RefreshControl } from 'react-native';
 const Project = ({ route }) => {
-    const { projectId } = route.params;
+    const { projectId, projectTitle } = route.params;
     const [tasks, setTasks] = useState([]);
     const navigation = useNavigation();
-    useEffect(() => {
-        const loadTasks = async () => {
-            const taskData = await getProjectTasks(db, projectId);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        // 데이터 새로고침 로직
+        loadTasks(true).then(() => {
+            setRefreshing(false);
+        });
+    }, []);
+    const loadTasks = async (refreshing) => {
+        let taskData = await getData('TASK_DATA');
+
+        if (!taskData || refreshing) {
+            taskData = await getProjectTasks(db, projectId);
+            await storeData('TASK_DATA', { [projectId]: taskData });
+            console.log('이게실행?@@@@@');
+            console.log(taskData);
+
             setTasks(taskData);
-        };
+        } else {
+            console.log('여기@@@@@');
+
+            setTasks(taskData[projectId]);
+        }
+    };
+    useEffect(() => {
         loadTasks();
     }, []);
     const handleAddButton = () => {
@@ -32,10 +55,15 @@ const Project = ({ route }) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-                <Ionicons name="arrow-back" size={24} color="black" />
-                <Text style={styles.headerTitle}>Messages</Text>
+                <TouchableOpacity activeOpacity={1} onPress={() => navigation.goBack()}>
+                    <Ionicons name="arrow-back" size={24} color="black" />
+                </TouchableOpacity>
+                <Text style={styles.headerTitle}>{projectTitle}</Text>
             </View>
-            <ScrollView style={styles.taskList}>
+            <ScrollView
+                style={styles.taskList}
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+            >
                 {tasks.map((task, index) => (
                     <TaskCard
                         key={index}
