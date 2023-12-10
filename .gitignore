@@ -20,8 +20,7 @@ web-build/
 ### Firebase Patch ###
 .runtimeconfig.json
 .firebase/
-firebase/
-firebase
+
 ### macOS ###
 # General
 .DS_Store
@@ -336,5 +335,4 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,visualstudiocode,reactnative,firebase
-firebase/firebaseConfig.js
-firebase/firebaseConfig.js
+
