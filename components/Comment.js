@@ -1,15 +1,19 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 export default Comment = ({ taskComment }) => {
-    return taskComment.map((comment, index) => (
-        <View key={index} style={styles.container}>
-            <View style={styles.head}>
-                <Text style={styles.author}>{comment.author}</Text>
-                <Text style={styles.date}>{comment.date}</Text>
+    if (taskComment) {
+        return taskComment.map((comment, index) => (
+            <View key={index} style={styles.container}>
+                <View style={styles.head}>
+                    <Text style={styles.author}>{comment.author}</Text>
+                    <Text style={styles.date}>{comment.date}</Text>
+                </View>
+                <Text style={styles.description}>{comment.description}</Text>
             </View>
-            <Text style={styles.description}>{comment.description}</Text>
-        </View>
-    ));
+        ));
+    } else {
+        return;
+    }
 };
 
 styles = StyleSheet.create({
@@ -30,7 +34,7 @@ styles = StyleSheet.create({
     },
     date: {
         fontSize: 12,
-        color: 'graa',
+        color: 'gray',
     },
     description: {
         fontSize: 16,

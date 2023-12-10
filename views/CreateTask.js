@@ -6,35 +6,29 @@ import { auth, db } from '../firebase/firebaseConfig'; // Import your Firebase c
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { collection, getDoc, query, where, doc } from 'firebase/firestore';
 import { storeData } from '../modules/storage';
+import addTask from '../modules/addTask';
+import { useNavigation } from '@react-navigation/native';
 
-export default function Login({ navigation }) {
+export default function CreateTask({ route }) {
     const myContext = useContext(AppContext);
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const handleSignIn = () => {
-        signInWithEmailAndPassword(auth, email, password)
-            .then(async () => {
-                // Handle successful registration
-                const user = auth.currentUser;
+    const { projectId } = route.params;
+    const navigation = useNavigation();
 
-                const userRef = doc(db, 'user', user.uid);
-                try {
-                    const querySnapshot = await getDoc(userRef);
-                    if (!querySnapshot.exists()) {
-                        navigation.navigate('회사설정');
-                    } else {
-                        Alert.alert('로그인 했습니다');
-                        myContext.setLogin();
-                        await storeData('UID', user.uid);
-                    }
-                } catch (error) {
-                    console.log(error);
-                }
-            })
-            .catch((error) => {
-                // Handle registration errors
-                Alert.alert(error.message);
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const handleUpload = async () => {
+        try {
+            await addTask({
+                AuthorId: myContext.uid,
+                Author: myContext.name,
+                Description: description,
+                Title: title,
+                projectId: projectId,
             });
+            navigation.navigate('프로젝트', { projectId: projectId });
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     return (
@@ -43,22 +37,22 @@ export default function Login({ navigation }) {
 
             <TextInput
                 style={styles.input}
-                placeholder="이메일 주소"
+                placeholder="제목"
                 autoCapitalize="none"
-                onChangeText={(email) => setEmail(email)}
-                value={email}
+                onChangeText={(title) => setTitle(title)}
+                value={title}
             />
             <TextInput
                 style={styles.input}
-                placeholder="비밀번호"
+                placeholder="본문"
                 autoCapitalize="none"
-                onChangeText={(password) => setPassword(password)}
-                value={password}
+                onChangeText={(description) => setDescription(description)}
+                value={description}
             />
             <LongButton
-                innerText={'로그인'}
+                innerText={'게시하기'}
                 customStyle={{ button: styles.login }}
-                onPressEvent={handleSignIn}
+                onPressEvent={handleUpload}
             />
         </View>
     );

@@ -1,16 +1,20 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
-const ProjectCard = ({ title, cardColor, userCount, isBookmarked }) => {
+import { useNavigation } from '@react-navigation/native';
+const ProjectCard = ({ title, cardColor, userCount, isBookmarked, projectId }) => {
     const screenWidth = Dimensions.get('window').width;
     const cardWidth = screenWidth * 0.5 - 20; // 화면 너비의 절반
-
-    const onBookmarkPress = () => {};
+    const navigation = useNavigation();
+    const handlePressProject = () => {
+        navigation.navigate('프로젝트', { projectId: projectId });
+    };
+    const onBookmarkPress = ({}) => {};
     return (
         <TouchableOpacity
             activeOpacity={0.4}
             style={[styles.card, { width: cardWidth, borderLeftColor: cardColor }]}
+            onPress={() => handlePressProject()}
         >
             <View style={styles.cardContent}>
                 <Text style={styles.title}>{title}</Text>

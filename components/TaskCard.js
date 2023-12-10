@@ -12,12 +12,13 @@ function TaskCard({
     taskTime,
     taskComment,
 }) {
+    const date = taskTime.toDate().toLocaleDateString('ko-KR');
     return (
         <TouchableOpacity style={styles.container}>
             <View style={styles.header}>
                 <View style={styles.info}>
                     <Text style={styles.author}>{author}</Text>
-                    <Text style={styles.date}>{taskTime}</Text>
+                    <Text style={styles.date}>{date}</Text>
                 </View>
 
                 <TouchableOpacity style={styles.status}>

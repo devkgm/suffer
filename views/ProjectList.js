@@ -8,17 +8,17 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import getUserProjects from '../modules/getUserProjects';
 import { useEffect, useState } from 'react';
 import { auth, db } from '../firebase/firebaseConfig';
-
+import { getData } from '../modules/storage';
 const Tap = createBottomTabNavigator();
 
 export default function ProjectList() {
     const [projects, setProjects] = useState([]);
-    const user = auth.currentUser;
+
     useEffect(() => {
         const loadProjects = async () => {
-            const projectsData = await getUserProjects(db, user.uid);
+            const uid = await getData('UID');
+            const projectsData = await getUserProjects(db, uid);
             setProjects(projectsData);
-            console.log(projectsData[0]);
         };
         loadProjects();
     }, []);
@@ -30,12 +30,14 @@ export default function ProjectList() {
 
             <ScrollView style={styles.scrollContainer}>
                 <View style={styles.cardContainer}>
-                    {projects.map((project) => (
+                    {projects.map((project, index) => (
                         <ProjectCard
+                            key={index}
                             title={project.Title}
                             userCount={project.Member}
                             isBookmarked={false}
                             cardColor={project.CardColor}
+                            projectId={project.Id}
                         />
                     ))}
                 </View>
@@ -54,7 +56,7 @@ const styles = StyleSheet.create({
         margin: 10,
     },
     scrollContainer: {
-        backgroundColor: '#777',
+        backgroundColor: '#fff',
     },
     cardContainer: {
         flex: 1,
