@@ -3,7 +3,6 @@
 # dependencies
 node_modules/
 .eslintrc.js
-.prettierrc.js
 # Expo
 ios
 .expo/
