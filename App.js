@@ -27,61 +27,46 @@ import CustomTab from './components/CustomTab';
 import Project from './views/Project';
 import CreateTask from './views/CreateTask';
 import { db } from './firebase/firebaseConfig';
-import getUserProjects from './modules/getUserProjects';
+import getUserProject from './modules/getUserProject';
 
 LogBox.ignoreLogs(['Sending `onAnimatedValueUpdate` with no listeners registered.']);
 
 const Tap = createBottomTabNavigator();
 const Stack = createStackNavigator();
-function HomeScreen() {
-    return (
-        <View style={styles.container}>
-            <StatusBar style="auto" />
-        </View>
-    );
-}
 
 export default function App() {
     const [isLogined, setIsLogined] = useState(false);
+    const [projectListData, setProjectListData] = useState([]);
+    const [uid, setUid] = useState(null);
     useEffect(() => {
-        const checkLoginState = async () => {
-            const userUID = await getData('UID');
-            if (userUID) {
+        console.log('App Loaded');
+        //로그인 확인
+        const checkLogin = async () => {
+            const uid = await getData('UID');
+            if (uid) {
+                setUid(uid);
                 setIsLogined(true);
             }
         };
-        checkLoginState();
-        const loadProjects = async () => {
-            const uid = await getData('UID');
-            const projectsData = await getUserProjects(db, uid);
-        };
-        const checkData = async () => {
-            const data = await getData('PROJECT_DATA');
-            console.log(data, '데이터 체크');
-            if (data) {
-                return true;
-            }
-            return false;
-        };
-        console.log(isLogined, checkData());
-        if (isLogined && !checkData()) {
-            console.log('loadProjects');
-            loadProjects();
-        }
+        checkLogin();
     }, []);
+    useEffect(() => {
+        //프로젝트 리스트 받아오기
+        const getProjectListData = async () => {
+            const projectListData = await getUserProject(db, uid);
+            console.log(projectListData);
+            setProjectListData(projectListData);
+        };
+        if (isLogined) {
+            getProjectListData();
+        }
+    }, [uid, isLogined]);
 
-    const setLogin = () => {
-        setIsLogined(true);
-    };
-    const LogOut = () => {
-        setIsLogined(false);
-    };
+    //context값
     const values = {
-        uid: 'QyuJA1y5P9Zl1yIMTWKplHErAGi1',
-        name: '김경모',
         isLogined: isLogined,
-        setLogin,
-        LogOut,
+        projectListData: projectListData,
+        setIsLogined,
     };
 
     const Tabnavigator = () => (

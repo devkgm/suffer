@@ -5,32 +5,18 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ProjectCard from '../components/ProjectCard';
 import TopNav from '../components/TopNav';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import getUserProjects from '../modules/getUserProjects';
-import { useEffect, useState } from 'react';
+import getUserProjects from '../modules/getUserProject';
+import { useContext, useEffect, useState } from 'react';
 import { auth, db } from '../firebase/firebaseConfig';
 import { getData, storeData } from '../modules/storage';
+import AppContext from '../AppContext';
 
 const Tap = createBottomTabNavigator();
 
-export default function ProjectList() {
+export default function ProjectList({ route }) {
     const [projects, setProjects] = useState([]);
-
-    useEffect(() => {
-        const loadProjects = async () => {
-            const projectsData = await getData('PROJECT_DATA');
-            console.log(projectsData);
-            if (projectsData) {
-                console.log('dk');
-                setProjects(projectsData);
-            } else {
-                console.log('adsfa');
-                const uid = await getData('UID');
-                const projectsData = await getUserProjects(db, uid);
-                setProjects(projectsData);
-            }
-        };
-        loadProjects();
-    }, []);
+    const myContext = useContext(AppContext);
+    useEffect(() => {}, []);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -39,7 +25,7 @@ export default function ProjectList() {
 
             <ScrollView style={styles.scrollContainer}>
                 <View style={styles.cardContainer}>
-                    {projects.map((project, index) => (
+                    {myContext.projectListData.map((project, index) => (
                         <ProjectCard
                             key={index}
                             title={project.Title}

@@ -20,7 +20,7 @@ export default function SetInfomation({ navigation }) {
                 Project: [],
                 favoriteProject: [],
             });
-            myContext.setLogin();
+            myContext.setIsLogined(true);
         } catch (error) {
             console.log(error);
         }

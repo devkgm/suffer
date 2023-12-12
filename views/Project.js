@@ -12,7 +12,7 @@ import { Ionicons } from '@expo/vector-icons';
 import TaskCard from '../components/TaskCard';
 import { db } from '../firebase/firebaseConfig';
 import { doc, getDoc } from 'firebase/firestore';
-import getProjectTasks from '../modules/getProjectTasks';
+import getProjectTask from '../modules/getProjectTask';
 import { useNavigation } from '@react-navigation/native';
 import { getData, removeData, storeData } from '../modules/storage';
 import { RefreshControl } from 'react-native';
@@ -33,7 +33,7 @@ const Project = ({ route }) => {
         let taskData = await getData('TASK_DATA');
 
         if (!taskData || refreshing) {
-            taskData = await getProjectTasks(db, projectId);
+            taskData = await getProjectTask(db, projectId);
             await storeData('TASK_DATA', { [projectId]: taskData });
             console.log('이게실행?@@@@@');
             console.log(taskData);

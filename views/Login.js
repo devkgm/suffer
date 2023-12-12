@@ -24,7 +24,7 @@ export default function Login({ navigation }) {
                         navigation.navigate('회사설정');
                     } else {
                         Alert.alert('로그인 했습니다');
-                        myContext.setLogin();
+                        myContext.setIsLogined(true);
                         await storeData('UID', user.uid);
                     }
                 } catch (error) {
