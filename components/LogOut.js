@@ -8,7 +8,7 @@ export default LogOut = () => {
     const myContext = useContext(AppContext);
     const navigation = useNavigation();
     const handleLogOut = async () => {
-        myContext.LogOut();
+        myContext.setIsLogined(false);
         await clearData();
         navigation.navigate('First');
     };

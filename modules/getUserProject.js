@@ -1,20 +1,26 @@
-import ProjectCard from '../components/ProjectCard';
-import { collection, getDoc, where, doc } from 'firebase/firestore';
+import { getDoc, doc } from 'firebase/firestore';
+import { db } from '../firebase/firebaseConfig';
 import { storeData } from './storage';
 
-export default getUserProject = async (db, uid) => {
-    console.log('getUserProject start');
+export default getUserProject = async (uid) => {
+    console.log('getUserProject Start');
+    console.log(uid);
     const userRef = doc(db, 'user', uid);
-    let projectData = [];
+    let projectListData = [];
+    let projectId = [];
     try {
         const userSnapshot = await getDoc(userRef);
         const projectRefs = userSnapshot.data().Project;
         for (const projectRef of projectRefs) {
             const projectSnapshot = await getDoc(projectRef);
-            projectData.push(projectSnapshot.data());
+            projectListData.push(projectSnapshot.data());
+            projectId.push(projectSnapshot.id);
         }
     } catch (error) {
         console.error(new Error(error));
     }
-    return projectData;
+    storeData('projectListData', projectListData);
+    console.log(Array.isArray(projectId));
+    console.log('getUserProject End');
+    return { projectListData: projectListData, projectId: projectId };
 };

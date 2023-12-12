@@ -1,32 +1,26 @@
-import ProjectCard from '../components/ProjectCard';
-import { collection, getDoc, where, doc, orderBy, query, getDocs } from 'firebase/firestore';
+import { getDoc, doc } from 'firebase/firestore';
+import { db } from '../firebase/firebaseConfig';
+import { storeData } from './storage';
 
-export default getProjectTasks = async (db, projectId) => {
+export default getProjectTask = async (projectId) => {
+    console.log('getProjectTask Start');
     const projectRef = doc(db, 'project', projectId);
-
     let taskData = [];
+
     try {
         const projectSnapshot = await getDoc(projectRef);
-        if (projectSnapshot.exists()) {
-            const taskRefs = projectSnapshot.data().Task;
-            if (taskRefs && taskRefs.length > 0) {
-                for (const taskRef of taskRefs) {
-                    const taskSnapshot = await getDoc(taskRef);
-                    if (taskSnapshot.exists()) {
-                        taskData.push(taskSnapshot.data());
-                    }
-                }
-                taskData.sort((a, b) => {
-                    return b.Date.seconds - a.Date.seconds;
-                });
-            } else {
-                console.log('테스크 레퍼런스가 없습니다.');
-            }
-        } else {
-            console.log('프로젝트가 존재하지 않습니다.');
+        const taskRefs = projectSnapshot.data().Task;
+        for (const taskRef of taskRefs) {
+            const taskSnapshot = await getDoc(taskRef);
+            taskData.push(taskSnapshot.data());
         }
-    } catch (err) {
-        console.log(err);
+        taskData.sort((a, b) => {
+            return b.Date.seconds - a.Date.seconds;
+        });
+    } catch (error) {
+        console.error(new Error(error));
     }
+    storeData('taskData', taskData);
+    console.log('getProjectTask End');
     return taskData;
 };

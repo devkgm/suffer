@@ -1,26 +1,19 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import {
-    SafeAreaView,
-    View,
-    Text,
-    StyleSheet,
-    TouchableOpacity,
-    TextInput,
-    ScrollView,
-} from 'react-native';
+import React, { useEffect, useState, useCallback, useContext } from 'react';
+import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import TaskCard from '../components/TaskCard';
 import { db } from '../firebase/firebaseConfig';
-import { doc, getDoc } from 'firebase/firestore';
 import getProjectTask from '../modules/getProjectTask';
 import { useNavigation } from '@react-navigation/native';
 import { getData, removeData, storeData } from '../modules/storage';
 import { RefreshControl } from 'react-native';
+import AppContext from '../AppContext';
 const Project = ({ route }) => {
-    const { projectId, projectTitle } = route.params;
+    const { projectId, projectTitle, task } = route.params;
     const [tasks, setTasks] = useState([]);
     const navigation = useNavigation();
     const [refreshing, setRefreshing] = useState(false);
+    const myContext = useContext(AppContext);
 
     const onRefresh = useCallback(() => {
         setRefreshing(true);
@@ -30,23 +23,19 @@ const Project = ({ route }) => {
         });
     }, []);
     const loadTasks = async (refreshing) => {
-        let taskData = await getData('TASK_DATA');
+        let taskData = await getData('taskData');
 
         if (!taskData || refreshing) {
-            taskData = await getProjectTask(db, projectId);
-            await storeData('TASK_DATA', { [projectId]: taskData });
-            console.log('이게실행?@@@@@');
-            console.log(taskData);
-
+            taskData = await getProjectTask(projectId);
+            await storeData('taskData', { [projectId]: taskData });
             setTasks(taskData);
         } else {
-            console.log('여기@@@@@');
-
             setTasks(taskData[projectId]);
         }
     };
     useEffect(() => {
-        loadTasks();
+        // loadTasks();
+        console.log('Project@@@', task);
     }, []);
     const handleAddButton = () => {
         navigation.navigate('업무추가', { projectId: projectId });
@@ -64,7 +53,7 @@ const Project = ({ route }) => {
                 style={styles.taskList}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             >
-                {tasks.map((task, index) => (
+                {task[projectId].map((task, index) => (
                     <TaskCard
                         key={index}
                         author={task.Author}
@@ -82,8 +71,6 @@ const Project = ({ route }) => {
                         ]}
                     />
                 ))}
-
-                {/* You would map through your messages here */}
             </ScrollView>
             <View style={styles.inputContainer}>
                 <TouchableOpacity style={styles.sendButton} onPress={() => handleAddButton()}>

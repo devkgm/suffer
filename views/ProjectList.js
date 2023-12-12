@@ -33,6 +33,7 @@ export default function ProjectList({ route }) {
                             isBookmarked={false}
                             cardColor={project.CardColor}
                             projectId={project.Id}
+                            task={myContext.projectTask[index]}
                         />
                     ))}
                 </View>

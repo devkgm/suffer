@@ -1,6 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
-import { AppState, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import First from './views/First';
 import ProjectList from './views/ProjectList';
 import Work from './views/Work';
@@ -13,17 +12,11 @@ import AppContext from './AppContext';
 import Addon from './views/Addon';
 import Alram from './views/Alram';
 import Login from './views/Login';
-import { Header } from 'react-native/Libraries/NewAppScreen';
 import { LogBox } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Task from './views/Task';
-import TaskCard from './components/TaskCard';
 import Registration from './views/Registration';
-import { auth } from './firebase/firebaseConfig';
 import SetInfomation from './views/SetInfomation';
 import { getData, storeData } from './modules/storage';
-import CustomStack from './components/CustomStack';
-import CustomTab from './components/CustomTab';
 import Project from './views/Project';
 import CreateTask from './views/CreateTask';
 import { db } from './firebase/firebaseConfig';
@@ -35,14 +28,18 @@ const Tap = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 export default function App() {
-    const [isLogined, setIsLogined] = useState(false);
+    const [isLogined, setIsLogined] = useState(true);
     const [projectListData, setProjectListData] = useState([]);
     const [uid, setUid] = useState(null);
+    const [projectId, setProjectId] = useState([]);
+    const [projectTask, setProjectTask] = useState([]);
     useEffect(() => {
         console.log('App Loaded');
         //로그인 확인
         const checkLogin = async () => {
-            const uid = await getData('UID');
+            if (uid == null) {
+                setUid(await getData('UID'));
+            }
             if (uid) {
                 setUid(uid);
                 setIsLogined(true);
@@ -53,20 +50,39 @@ export default function App() {
     useEffect(() => {
         //프로젝트 리스트 받아오기
         const getProjectListData = async () => {
-            const projectListData = await getUserProject(db, uid);
-            console.log(projectListData);
+            const { projectListData, projectId } = await getUserProject(uid);
+            console.log(projectListData, projectId);
             setProjectListData(projectListData);
+            setProjectId(projectId);
+            if (projectId.length > 0) {
+                console.log(Array.isArray(projectId));
+                getTask(projectId);
+            }
         };
-        if (isLogined) {
+        const getTask = (projectId) => {
+            projectId.forEach(async (id) => {
+                try {
+                    const taskData = await getProjectTask(id);
+                    console.log(taskData);
+                    setProjectTask((prev) => [...prev, { [id]: taskData }]);
+                } catch (err) {
+                    console.log(err);
+                }
+            });
+        };
+        if (uid) {
             getProjectListData();
         }
-    }, [uid, isLogined]);
+    }, [uid]);
 
     //context값
     const values = {
         isLogined: isLogined,
         projectListData: projectListData,
+        projectId: projectId,
+        projectTask: projectTask,
         setIsLogined,
+        setUid,
     };
 
     const Tabnavigator = () => (

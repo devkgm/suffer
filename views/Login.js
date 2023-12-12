@@ -25,6 +25,7 @@ export default function Login({ navigation }) {
                     } else {
                         Alert.alert('로그인 했습니다');
                         myContext.setIsLogined(true);
+                        myContext.setUid(user.uid);
                         await storeData('UID', user.uid);
                     }
                 } catch (error) {
