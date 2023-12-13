@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import { getData, removeData, storeData } from '../modules/storage';
 import { RefreshControl } from 'react-native';
 import AppContext from '../AppContext';
-const Project = ({ route }) => {
+export default Task = ({ route }) => {
     const { projectId, projectTitle, task } = route.params;
     const [tasks, setTasks] = useState([]);
     const navigation = useNavigation();
@@ -35,7 +35,6 @@ const Project = ({ route }) => {
     };
     useEffect(() => {
         // loadTasks();
-        console.log('Project@@@', task);
     }, []);
     const handleAddButton = () => {
         navigation.navigate('업무추가', { projectId: projectId });
@@ -53,7 +52,7 @@ const Project = ({ route }) => {
                 style={styles.taskList}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             >
-                {task[projectId].map((task, index) => (
+                {task.map((task, index) => (
                     <TaskCard
                         key={index}
                         author={task.Author}
@@ -123,5 +122,3 @@ const styles = StyleSheet.create({
         borderRadius: 16,
     },
 });
-
-export default Project;

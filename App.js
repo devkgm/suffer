@@ -17,7 +17,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Registration from './views/Registration';
 import SetInfomation from './views/SetInfomation';
 import { getData, storeData } from './modules/storage';
-import Project from './views/Project';
+import Project from './views/Task';
 import CreateTask from './views/CreateTask';
 import { db } from './firebase/firebaseConfig';
 import getProject from './modules/getProject';

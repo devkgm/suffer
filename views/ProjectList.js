@@ -25,17 +25,20 @@ export default function ProjectList({ route }) {
 
             <ScrollView style={styles.scrollContainer}>
                 <View style={styles.cardContainer}>
-                    {myContext.projectListData.map((project, index) => (
-                        <ProjectCard
-                            key={index}
-                            title={project.Title}
-                            userCount={project.Member}
-                            isBookmarked={false}
-                            cardColor={project.CardColor}
-                            projectId={project.Id}
-                            task={myContext.projectTask[index]}
-                        />
-                    ))}
+                    {myContext.projectData.map((projectObject, index) => {
+                        const project = Object.values(projectObject)[0];
+                        return (
+                            <ProjectCard
+                                key={index}
+                                title={project.Title}
+                                userCount={project.Member}
+                                isBookmarked={false}
+                                cardColor={project.CardColor}
+                                projectId={project.Id}
+                                task={project.Task}
+                            />
+                        );
+                    })}
                 </View>
             </ScrollView>
         </SafeAreaView>

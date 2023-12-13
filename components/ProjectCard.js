@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
-const ProjectCard = ({ title, cardColor, userCount, isBookmarked, projectId, task }) => {
+export default ProjectCard = ({ title, cardColor, userCount, isBookmarked, projectId, task }) => {
     const screenWidth = Dimensions.get('window').width;
     const cardWidth = screenWidth * 0.5 - 20; // 화면 너비의 절반
     const navigation = useNavigation();
@@ -79,5 +79,3 @@ const styles = StyleSheet.create({
         color: '#007AFF',
     },
 });
-
-export default ProjectCard;
