@@ -8,6 +8,7 @@ import { collection, getDoc, query, where, doc } from 'firebase/firestore';
 import { storeData } from '../modules/storage';
 import addTask from '../modules/addTask';
 import { useNavigation } from '@react-navigation/native';
+import getTask from '../modules/getTask';
 
 export default function CreateTask({ route }) {
     const myContext = useContext(AppContext);
@@ -25,7 +26,23 @@ export default function CreateTask({ route }) {
                 Title: title,
                 projectId: projectId,
             });
-            navigation.navigate('프로젝트', { projectId: projectId });
+            const taskData = await getTask(projectId);
+            // for (const project of myContext.projectData) {
+            // if (projectId == project.id) {
+            //     console.log('프로젝트' + project);
+            //     const newData = [...myContext.projectData];
+            //     let findIndex = newData.findIndex((item) => item.id == projectId);
+            //     if (findIndex) {
+            //         newData[findIndex] = {
+            //             ...newData[findIndex],
+            //             Task: taskData,
+            //         };
+            //     }
+            //     myContext.setProjectData(newData);
+            // }
+            // }
+            // navigation.navigate('Task', { projectId: projectId });
+            // navigation.goBack();
         } catch (err) {
             console.log(err);
         }
@@ -43,9 +60,12 @@ export default function CreateTask({ route }) {
                 value={title}
             />
             <TextInput
-                style={styles.input}
+                style={[styles.input, styles.textarea]}
+                multiline={true}
+                numberOfLines={1}
                 placeholder="본문"
                 autoCapitalize="none"
+                // height={200}
                 onChangeText={(description) => setDescription(description)}
                 value={description}
             />
@@ -76,6 +96,11 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         width: 300,
         padding: 10,
+    },
+    textarea: {
+        borderWidth: 1,
+        height: 200,
+        textAlignVertical: 'top',
     },
     login: {
         position: 'absolute',

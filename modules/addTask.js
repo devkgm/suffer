@@ -4,6 +4,17 @@ import updateProject from './updateProject';
 export default addTask = async ({ Author, AuthorId, Charge, Description, Title, projectId }) => {
     let date = new Date();
     date = date.toLocaleDateString('ko-KR');
+    console.log({
+        Author: Author,
+        AuthorId: AuthorId,
+        Charge: [],
+        Comment: [],
+        Date: new Date(),
+        Description: Description,
+        Status: 0,
+        Title: Title,
+        history: [date + '에 생성'],
+    });
     try {
         const docRef = await addDoc(collection(db, 'task'), {
             Author: Author,

@@ -9,7 +9,7 @@ import { getData, removeData, storeData } from '../modules/storage';
 import { RefreshControl } from 'react-native';
 import AppContext from '../AppContext';
 export default Task = ({ route }) => {
-    const { projectId, projectTitle, task } = route.params;
+    const { projectId, projectTitle, task, index } = route.params;
     const [tasks, setTasks] = useState([]);
     const navigation = useNavigation();
     const [refreshing, setRefreshing] = useState(false);
@@ -35,11 +35,12 @@ export default Task = ({ route }) => {
     };
     useEffect(() => {
         // loadTasks();
+        console.log(projectId, index);
+        console.log(myContext.projectData[index]);
     }, []);
     const handleAddButton = () => {
         navigation.navigate('업무추가', { projectId: projectId });
     };
-
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>

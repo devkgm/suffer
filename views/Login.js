@@ -19,13 +19,14 @@ export default function Login({ navigation }) {
 
                 const userRef = doc(db, 'user', user.uid);
                 try {
-                    const querySnapshot = await getDoc(userRef);
-                    if (!querySnapshot.exists()) {
+                    const userSnapshot = await getDoc(userRef);
+                    if (!userSnapshot.exists()) {
                         navigation.navigate('회사설정');
                     } else {
                         Alert.alert('로그인 했습니다');
                         myContext.setIsLogined(true);
                         myContext.setUid(user.uid);
+                        myContext.setName(userSnapshot.data().Name);
                         await storeData('UID', user.uid);
                     }
                 } catch (error) {

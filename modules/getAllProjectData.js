@@ -23,11 +23,12 @@ export default getAllProjectData = async (uid) => {
             });
             const data = projectSnapshot.data();
             data.Task = tasks;
-            projectData.push({ [projectSnapshot.id]: data });
+            projectData.push({ id: projectSnapshot.id, data: data });
         }
     } catch (error) {
         console.error(new Error(error));
     }
+    console.log(projectData);
     console.log('getAllProjectData End');
     return projectData;
 };

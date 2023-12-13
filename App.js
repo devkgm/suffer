@@ -17,7 +17,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Registration from './views/Registration';
 import SetInfomation from './views/SetInfomation';
 import { getData, storeData } from './modules/storage';
-import Project from './views/Task';
+import Task from './views/Task';
 import CreateTask from './views/CreateTask';
 import { db } from './firebase/firebaseConfig';
 import getProject from './modules/getProject';
@@ -37,6 +37,7 @@ export default function App() {
     const [projectTask, setProjectTask] = useState([]);
     const [projectData, setProjectData] = useState([]);
     const [dataLoaded, setDataLoaded] = useState(false);
+    const [name, setName] = useState('');
 
     //context값
     const values = {
@@ -45,8 +46,12 @@ export default function App() {
         projectId: projectId,
         projectTask: projectTask,
         projectData: projectData,
+        uid: uid,
+        name: name,
         setIsLogined,
         setUid,
+        setName,
+        setProjectData,
     };
     useEffect(() => {
         console.log('App Loaded');
@@ -117,6 +122,7 @@ export default function App() {
                     headerShown: false,
                     tabBarIcon: ({ color }) => <Icon name="tasks" color={color} size={20} />,
                 }}
+                initialParams={{ projectData: projectData }}
             />
             <Tap.Screen
                 name="업무"
@@ -166,8 +172,8 @@ export default function App() {
                                 }}
                             />
                             <Stack.Screen
-                                name="프로젝트"
-                                component={Project}
+                                name="Task"
+                                component={Task}
                                 options={{
                                     headerShown: false,
                                 }}
