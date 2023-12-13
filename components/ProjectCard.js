@@ -6,7 +6,6 @@ export default ProjectCard = ({ title, cardColor, userCount, isBookmarked, proje
     const screenWidth = Dimensions.get('window').width;
     const cardWidth = screenWidth * 0.5 - 20; // 화면 너비의 절반
     const navigation = useNavigation();
-    console.log('taskk@@@', task);
     const handlePressProject = () => {
         navigation.navigate('프로젝트', { projectId: projectId, projectTitle: title, task: task });
     };

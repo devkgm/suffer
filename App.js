@@ -23,6 +23,7 @@ import { db } from './firebase/firebaseConfig';
 import getProject from './modules/getProject';
 import getAllProjectData from './modules/getAllProjectData';
 import getTask from './modules/getTask';
+import DataLoad from './components/DataLoad';
 LogBox.ignoreLogs(['Sending `onAnimatedValueUpdate` with no listeners registered.']);
 
 const Tap = createBottomTabNavigator();
@@ -35,6 +36,8 @@ export default function App() {
     const [projectId, setProjectId] = useState([]);
     const [projectTask, setProjectTask] = useState([]);
     const [projectData, setProjectData] = useState([]);
+    const [dataLoaded, setDataLoaded] = useState(false);
+
     //context값
     const values = {
         isLogined: isLogined,
@@ -85,6 +88,7 @@ export default function App() {
         const loadProjectData = async () => {
             const data = await getAllProjectData(uid);
             setProjectData(data);
+            setDataLoaded(true);
         };
         if (uid) {
             // getProjectListData();
@@ -151,53 +155,57 @@ export default function App() {
     return (
         <AppContext.Provider value={values} style={styles.container}>
             <NavigationContainer>
-                {isLogined ? (
-                    <Stack.Navigator initialRouteName="Tabnavigator">
-                        <Stack.Screen
-                            name="Main"
-                            component={Tabnavigator}
-                            options={{
-                                headerShown: false,
-                            }}
-                        />
-                        <Stack.Screen
-                            name="프로젝트"
-                            component={Project}
-                            options={{
-                                headerShown: false,
-                            }}
-                        />
-                        <Stack.Screen
-                            name="업무추가"
-                            component={CreateTask}
-                            options={{
-                                headerShown: false,
-                            }}
-                        />
-                    </Stack.Navigator>
+                {dataLoaded ? (
+                    isLogined ? (
+                        <Stack.Navigator initialRouteName="Tabnavigator">
+                            <Stack.Screen
+                                name="Main"
+                                component={Tabnavigator}
+                                options={{
+                                    headerShown: false,
+                                }}
+                            />
+                            <Stack.Screen
+                                name="프로젝트"
+                                component={Project}
+                                options={{
+                                    headerShown: false,
+                                }}
+                            />
+                            <Stack.Screen
+                                name="업무추가"
+                                component={CreateTask}
+                                options={{
+                                    headerShown: false,
+                                }}
+                            />
+                        </Stack.Navigator>
+                    ) : (
+                        <Stack.Navigator initialRouteName="First">
+                            <Stack.Screen
+                                name="First"
+                                component={First}
+                                options={{ headerShown: false }}
+                            />
+                            <Stack.Screen
+                                name="Login"
+                                component={Login}
+                                options={{ headerShown: false }}
+                            />
+                            <Stack.Screen
+                                name="Registration"
+                                component={Registration}
+                                options={{ headerShown: false }}
+                            />
+                            <Stack.Screen
+                                name="회사설정"
+                                component={SetInfomation}
+                                options={{ headerShown: false }}
+                            />
+                        </Stack.Navigator>
+                    )
                 ) : (
-                    <Stack.Navigator initialRouteName="First">
-                        <Stack.Screen
-                            name="First"
-                            component={First}
-                            options={{ headerShown: false }}
-                        />
-                        <Stack.Screen
-                            name="Login"
-                            component={Login}
-                            options={{ headerShown: false }}
-                        />
-                        <Stack.Screen
-                            name="Registration"
-                            component={Registration}
-                            options={{ headerShown: false }}
-                        />
-                        <Stack.Screen
-                            name="회사설정"
-                            component={SetInfomation}
-                            options={{ headerShown: false }}
-                        />
-                    </Stack.Navigator>
+                    <DataLoad />
                 )}
             </NavigationContainer>
         </AppContext.Provider>
