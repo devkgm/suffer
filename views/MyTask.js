@@ -11,7 +11,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import TaskCard from '../components/TaskCard';
 
-const Task = () => {
+const MyTask = () => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>

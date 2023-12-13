@@ -2,8 +2,8 @@ import { getDoc, doc } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 import { storeData } from './storage';
 
-export default getProjectTask = async (projectId) => {
-    console.log('getProjectTask Start');
+export default getTask = async (projectId) => {
+    console.log('getTask Start');
     const projectRef = doc(db, 'project', projectId);
     let taskData = [];
 
@@ -21,6 +21,6 @@ export default getProjectTask = async (projectId) => {
         console.error(new Error(error));
     }
     storeData('taskData', taskData);
-    console.log('getProjectTask End');
+    console.log('getTask End');
     return taskData;
 };

@@ -20,8 +20,9 @@ import { getData, storeData } from './modules/storage';
 import Project from './views/Project';
 import CreateTask from './views/CreateTask';
 import { db } from './firebase/firebaseConfig';
-import getUserProject from './modules/getUserProject';
-
+import getProject from './modules/getProject';
+import getAllProjectData from './modules/getAllProjectData';
+import getTask from './modules/getTask';
 LogBox.ignoreLogs(['Sending `onAnimatedValueUpdate` with no listeners registered.']);
 
 const Tap = createBottomTabNavigator();
@@ -33,6 +34,17 @@ export default function App() {
     const [uid, setUid] = useState(null);
     const [projectId, setProjectId] = useState([]);
     const [projectTask, setProjectTask] = useState([]);
+    const [projectData, setProjectData] = useState([]);
+    //context값
+    const values = {
+        isLogined: isLogined,
+        projectListData: projectListData,
+        projectId: projectId,
+        projectTask: projectTask,
+        projectData: projectData,
+        setIsLogined,
+        setUid,
+    };
     useEffect(() => {
         console.log('App Loaded');
         //로그인 확인
@@ -50,19 +62,19 @@ export default function App() {
     useEffect(() => {
         //프로젝트 리스트 받아오기
         const getProjectListData = async () => {
-            const { projectListData, projectId } = await getUserProject(uid);
+            const { projectListData, projectId } = await getProject(uid);
             console.log(projectListData, projectId);
             setProjectListData(projectListData);
             setProjectId(projectId);
             if (projectId.length > 0) {
                 console.log(Array.isArray(projectId));
-                getTask(projectId);
+                loadTask(projectId);
             }
         };
-        const getTask = (projectId) => {
+        const loadTask = (projectId) => {
             projectId.forEach(async (id) => {
                 try {
-                    const taskData = await getProjectTask(id);
+                    const taskData = await getTask(id);
                     console.log(taskData);
                     setProjectTask((prev) => [...prev, { [id]: taskData }]);
                 } catch (err) {
@@ -70,20 +82,15 @@ export default function App() {
                 }
             });
         };
+        const loadProjectData = async () => {
+            const data = await getAllProjectData(uid);
+            setProjectData(data);
+        };
         if (uid) {
-            getProjectListData();
+            // getProjectListData();
+            loadProjectData();
         }
     }, [uid]);
-
-    //context값
-    const values = {
-        isLogined: isLogined,
-        projectListData: projectListData,
-        projectId: projectId,
-        projectTask: projectTask,
-        setIsLogined,
-        setUid,
-    };
 
     const Tabnavigator = () => (
         <Tap.Navigator

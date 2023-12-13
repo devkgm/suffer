@@ -3,7 +3,7 @@ import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity, ScrollView } fr
 import { Ionicons } from '@expo/vector-icons';
 import TaskCard from '../components/TaskCard';
 import { db } from '../firebase/firebaseConfig';
-import getProjectTask from '../modules/getProjectTask';
+import getTask from '../modules/getTask';
 import { useNavigation } from '@react-navigation/native';
 import { getData, removeData, storeData } from '../modules/storage';
 import { RefreshControl } from 'react-native';
@@ -26,7 +26,7 @@ const Project = ({ route }) => {
         let taskData = await getData('taskData');
 
         if (!taskData || refreshing) {
-            taskData = await getProjectTask(projectId);
+            taskData = await getTask(projectId);
             await storeData('taskData', { [projectId]: taskData });
             setTasks(taskData);
         } else {

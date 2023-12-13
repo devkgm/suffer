@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ProjectCard from '../components/ProjectCard';
 import TopNav from '../components/TopNav';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import getUserProjects from '../modules/getUserProject';
+import getProject from '../modules/getProject';
 import { useContext, useEffect, useState } from 'react';
 import { auth, db } from '../firebase/firebaseConfig';
 import { getData, storeData } from '../modules/storage';
