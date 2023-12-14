@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import First from './views/First';
 import ProjectList from './views/ProjectList';
 import Work from './views/Work';
@@ -158,6 +158,7 @@ export default function App() {
             />
         </Tap.Navigator>
     );
+
     return (
         <AppContext.Provider value={values} style={styles.container}>
             <NavigationContainer>
