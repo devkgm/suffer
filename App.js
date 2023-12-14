@@ -31,10 +31,8 @@ const Stack = createStackNavigator();
 
 export default function App() {
     const [isLogined, setIsLogined] = useState(true);
-    const [projectListData, setProjectListData] = useState([]);
     const [uid, setUid] = useState(null);
     const [projectId, setProjectId] = useState([]);
-    const [projectTask, setProjectTask] = useState([]);
     const [projectData, setProjectData] = useState([]);
     const [dataLoaded, setDataLoaded] = useState(false);
     const [name, setName] = useState('');
@@ -42,9 +40,7 @@ export default function App() {
     //context값
     const values = {
         isLogined: isLogined,
-        projectListData: projectListData,
         projectId: projectId,
-        projectTask: projectTask,
         projectData: projectData,
         uid: uid,
         name: name,
@@ -68,35 +64,13 @@ export default function App() {
         checkLogin();
     }, []);
     useEffect(() => {
-        //프로젝트 리스트 받아오기
-        const getProjectListData = async () => {
-            const { projectListData, projectId } = await getProject(uid);
-            console.log(projectListData, projectId);
-            setProjectListData(projectListData);
-            setProjectId(projectId);
-            if (projectId.length > 0) {
-                console.log(Array.isArray(projectId));
-                loadTask(projectId);
-            }
-        };
-        const loadTask = (projectId) => {
-            projectId.forEach(async (id) => {
-                try {
-                    const taskData = await getTask(id);
-                    console.log(taskData);
-                    setProjectTask((prev) => [...prev, { [id]: taskData }]);
-                } catch (err) {
-                    console.log(err);
-                }
-            });
-        };
+        //프로젝트 데이터 받아오기
         const loadProjectData = async () => {
             const data = await getAllProjectData(uid);
             setProjectData(data);
             setDataLoaded(true);
         };
         if (uid) {
-            // getProjectListData();
             loadProjectData();
         }
     }, [uid]);
