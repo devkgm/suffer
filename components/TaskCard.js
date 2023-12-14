@@ -29,7 +29,7 @@ function TaskCard({
             <View style={styles.body}>
                 <Text style={styles.title}>{taskTitle}</Text>
 
-                <Text>{taskTitle}</Text>
+                <Text>{taskDescription}</Text>
                 <Order />
             </View>
             <View style={styles.comment}>

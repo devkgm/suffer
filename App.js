@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import First from './views/First';
 import ProjectList from './views/ProjectList';
 import Work from './views/Work';
@@ -30,11 +30,9 @@ const Tap = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 export default function App() {
-    const [isLogined, setIsLogined] = useState(true);
-    const [projectListData, setProjectListData] = useState([]);
+    const [isLogined, setIsLogined] = useState(false);
     const [uid, setUid] = useState(null);
     const [projectId, setProjectId] = useState([]);
-    const [projectTask, setProjectTask] = useState([]);
     const [projectData, setProjectData] = useState([]);
     const [dataLoaded, setDataLoaded] = useState(false);
     const [name, setName] = useState('');
@@ -42,9 +40,7 @@ export default function App() {
     //context값
     const values = {
         isLogined: isLogined,
-        projectListData: projectListData,
         projectId: projectId,
-        projectTask: projectTask,
         projectData: projectData,
         uid: uid,
         name: name,
@@ -64,39 +60,19 @@ export default function App() {
                 setUid(uid);
                 setIsLogined(true);
             }
+            console.log(uid, isLogined);
         };
+
         checkLogin();
     }, []);
     useEffect(() => {
-        //프로젝트 리스트 받아오기
-        const getProjectListData = async () => {
-            const { projectListData, projectId } = await getProject(uid);
-            console.log(projectListData, projectId);
-            setProjectListData(projectListData);
-            setProjectId(projectId);
-            if (projectId.length > 0) {
-                console.log(Array.isArray(projectId));
-                loadTask(projectId);
-            }
-        };
-        const loadTask = (projectId) => {
-            projectId.forEach(async (id) => {
-                try {
-                    const taskData = await getTask(id);
-                    console.log(taskData);
-                    setProjectTask((prev) => [...prev, { [id]: taskData }]);
-                } catch (err) {
-                    console.log(err);
-                }
-            });
-        };
+        //프로젝트 데이터 받아오기
         const loadProjectData = async () => {
             const data = await getAllProjectData(uid);
             setProjectData(data);
             setDataLoaded(true);
         };
         if (uid) {
-            // getProjectListData();
             loadProjectData();
         }
     }, [uid]);
@@ -158,11 +134,12 @@ export default function App() {
             />
         </Tap.Navigator>
     );
+
     return (
         <AppContext.Provider value={values} style={styles.container}>
             <NavigationContainer>
-                {dataLoaded ? (
-                    isLogined ? (
+                {isLogined ? (
+                    dataLoaded ? (
                         <Stack.Navigator initialRouteName="Tabnavigator">
                             <Stack.Screen
                                 name="Main"
@@ -187,31 +164,31 @@ export default function App() {
                             />
                         </Stack.Navigator>
                     ) : (
-                        <Stack.Navigator initialRouteName="First">
-                            <Stack.Screen
-                                name="First"
-                                component={First}
-                                options={{ headerShown: false }}
-                            />
-                            <Stack.Screen
-                                name="Login"
-                                component={Login}
-                                options={{ headerShown: false }}
-                            />
-                            <Stack.Screen
-                                name="Registration"
-                                component={Registration}
-                                options={{ headerShown: false }}
-                            />
-                            <Stack.Screen
-                                name="회사설정"
-                                component={SetInfomation}
-                                options={{ headerShown: false }}
-                            />
-                        </Stack.Navigator>
+                        <DataLoad />
                     )
                 ) : (
-                    <DataLoad />
+                    <Stack.Navigator initialRouteName="First">
+                        <Stack.Screen
+                            name="First"
+                            component={First}
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="Login"
+                            component={Login}
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="Registration"
+                            component={Registration}
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="회사설정"
+                            component={SetInfomation}
+                            options={{ headerShown: false }}
+                        />
+                    </Stack.Navigator>
                 )}
             </NavigationContainer>
         </AppContext.Provider>

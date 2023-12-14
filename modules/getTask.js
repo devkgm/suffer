@@ -1,19 +1,16 @@
-import { getDoc, doc } from 'firebase/firestore';
+import { getDoc, doc, collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 import { storeData } from './storage';
 
 export default getTask = async (projectId) => {
     console.log('getTask Start');
-    const projectRef = doc(db, 'project', projectId);
-    let taskData = [];
+    const startTime = Date.now();
+    let taskData;
 
     try {
-        const projectSnapshot = await getDoc(projectRef);
-        const taskRefs = projectSnapshot.data().Task;
-        for (const taskRef of taskRefs) {
-            const taskSnapshot = await getDoc(taskRef);
-            taskData.push(taskSnapshot.data());
-        }
+        const taskRef = collection(db, 'project', projectId, 'task');
+        const taskSnapshots = await getDocs(taskRef);
+        taskData = taskSnapshots.docs.map((doc) => doc.data());
         taskData.sort((a, b) => {
             return b.Date.seconds - a.Date.seconds;
         });
@@ -21,6 +18,7 @@ export default getTask = async (projectId) => {
         console.error(new Error(error));
     }
     storeData('taskData', taskData);
+    console.log('데이터 받아오기 실행 시간: ', Date.now() - startTime);
     console.log('getTask End');
     return taskData;
 };

@@ -1,10 +1,10 @@
 import React, { useState, useContext } from 'react';
 import AppContext from '../AppContext';
-import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Alert } from 'react-native';
 import LongButton from '../components/LongButton';
 import { auth, db } from '../firebase/firebaseConfig'; // Import your Firebase configuration
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { collection, getDoc, query, where, doc } from 'firebase/firestore';
+import { getDoc, doc } from 'firebase/firestore';
 import { storeData } from '../modules/storage';
 
 export default function Login({ navigation }) {
@@ -23,7 +23,6 @@ export default function Login({ navigation }) {
                     if (!userSnapshot.exists()) {
                         navigation.navigate('회사설정');
                     } else {
-                        Alert.alert('로그인 했습니다');
                         myContext.setIsLogined(true);
                         myContext.setUid(user.uid);
                         myContext.setName(userSnapshot.data().Name);

@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import TaskCard from '../components/TaskCard';
 import { db } from '../firebase/firebaseConfig';
 import getTask from '../modules/getTask';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { getData, removeData, storeData } from '../modules/storage';
 import { RefreshControl } from 'react-native';
 import AppContext from '../AppContext';
@@ -35,9 +35,15 @@ export default Task = ({ route }) => {
     };
     useEffect(() => {
         // loadTasks();
+        setTasks(task);
         console.log(projectId, index);
-        console.log(myContext.projectData[index]);
     }, []);
+    useFocusEffect(
+        useCallback(() => {
+            console.log('Use Callback');
+            setTasks(myContext.projectData[index].data.Task);
+        }, []),
+    );
     const handleAddButton = () => {
         navigation.navigate('업무추가', { projectId: projectId });
     };
@@ -53,24 +59,26 @@ export default Task = ({ route }) => {
                 style={styles.taskList}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             >
-                {task.map((task, index) => (
-                    <TaskCard
-                        key={index}
-                        author={task.Author}
-                        taskTitle={task.Title}
-                        taskDescription={task.Desctiption}
-                        taskStatus={task.Status}
-                        taskTime={task.Date}
-                        taskComment={[
-                            {
-                                authorId: 0,
-                                author: '김경모',
-                                description: '이거 맞나요?',
-                                date: '2023-12-09',
-                            },
-                        ]}
-                    />
-                ))}
+                {tasks.map((task, index) => {
+                    return (
+                        <TaskCard
+                            key={index}
+                            author={task.Author}
+                            taskTitle={task.Title}
+                            taskDescription={task.Description}
+                            taskStatus={task.Status}
+                            taskTime={task.Date}
+                            taskComment={[
+                                {
+                                    authorId: 0,
+                                    author: '김경모',
+                                    description: '이거 맞나요?',
+                                    date: '2023-12-09',
+                                },
+                            ]}
+                        />
+                    );
+                })}
             </ScrollView>
             <View style={styles.inputContainer}>
                 <TouchableOpacity style={styles.sendButton} onPress={() => handleAddButton()}>
