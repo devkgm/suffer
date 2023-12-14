@@ -1,6 +1,15 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import AppContext from '../AppContext';
-import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, Alert } from 'react-native';
+import {
+    StyleSheet,
+    Text,
+    View,
+    Button,
+    TouchableOpacity,
+    TextInput,
+    Alert,
+    TouchableWithoutFeedback,
+} from 'react-native';
 import LongButton from '../components/LongButton';
 import { auth, db } from '../firebase/firebaseConfig'; // Import your Firebase configuration
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -11,12 +20,17 @@ import { useNavigation } from '@react-navigation/native';
 import getTask from '../modules/getTask';
 
 export default function CreateTask({ route }) {
+    const inputRef1 = useRef(null);
+    const inputRef2 = useRef(null);
     const myContext = useContext(AppContext);
     const { projectId } = route.params;
     const navigation = useNavigation();
-
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const handleBlur = () => {
+        inputRef1.current.blur();
+        inputRef2.current.blur();
+    };
     const handleUpload = async () => {
         try {
             await addTask({
@@ -49,32 +63,36 @@ export default function CreateTask({ route }) {
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>suffer.</Text>
+        <TouchableWithoutFeedback onPress={handleBlur}>
+            <View style={styles.container}>
+                <Text style={styles.title}>suffer.</Text>
 
-            <TextInput
-                style={styles.input}
-                placeholder="제목"
-                autoCapitalize="none"
-                onChangeText={(title) => setTitle(title)}
-                value={title}
-            />
-            <TextInput
-                style={[styles.input, styles.textarea]}
-                multiline={true}
-                numberOfLines={1}
-                placeholder="본문"
-                autoCapitalize="none"
-                // height={200}
-                onChangeText={(description) => setDescription(description)}
-                value={description}
-            />
-            <LongButton
-                innerText={'게시하기'}
-                customStyle={{ button: styles.login }}
-                onPressEvent={handleUpload}
-            />
-        </View>
+                <TextInput
+                    style={styles.input}
+                    placeholder="제목"
+                    autoCapitalize="none"
+                    onChangeText={(title) => setTitle(title)}
+                    value={title}
+                    ref={inputRef1}
+                />
+                <TextInput
+                    style={[styles.input, styles.textarea]}
+                    multiline={true}
+                    numberOfLines={1}
+                    placeholder="본문"
+                    autoCapitalize="none"
+                    // height={200}
+                    onChangeText={(description) => setDescription(description)}
+                    value={description}
+                    ref={inputRef2}
+                />
+                <LongButton
+                    innerText={'게시하기'}
+                    customStyle={{ button: styles.login }}
+                    onPressEvent={handleUpload}
+                />
+            </View>
+        </TouchableWithoutFeedback>
     );
 }
 
