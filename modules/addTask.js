@@ -6,7 +6,7 @@ export default addTask = async ({ Author, AuthorId, Charge, Description, Title, 
     console.log(projectId);
 
     try {
-        const docRef = await addDoc(collection(db, 'project', projectId, 'task'), {
+        const taskRef = await addDoc(collection(db, 'project', projectId, 'task'), {
             Author: Author,
             AuthorId: AuthorId,
             Charge: [],
@@ -17,7 +17,7 @@ export default addTask = async ({ Author, AuthorId, Charge, Description, Title, 
             Title: Title,
             history: [date + '에 생성'],
         });
-        return true;
+        return taskRef;
     } catch (err) {
         console.log(err);
         return false;

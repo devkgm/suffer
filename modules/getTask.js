@@ -5,12 +5,12 @@ import { storeData } from './storage';
 export default getTask = async (projectId) => {
     console.log('getTask Start');
     const startTime = Date.now();
-    let taskData = [];
+    let taskData;
 
     try {
         const taskRef = collection(db, 'project', projectId, 'task');
         const taskSnapshots = await getDocs(taskRef);
-        taskData.push(taskSnapshots.docs.map((doc) => doc.data()));
+        taskData = taskSnapshots.docs.map((doc) => doc.data());
         taskData.sort((a, b) => {
             return b.Date.seconds - a.Date.seconds;
         });

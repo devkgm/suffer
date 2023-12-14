@@ -33,7 +33,7 @@ export default function CreateTask({ route }) {
     };
     const handleUpload = async () => {
         try {
-            await addTask({
+            const taskRef = await addTask({
                 AuthorId: myContext.uid,
                 Author: myContext.name,
                 Description: description,
@@ -41,22 +41,15 @@ export default function CreateTask({ route }) {
                 projectId: projectId,
             });
             const taskData = await getTask(projectId);
-            // for (const project of myContext.projectData) {
-            // if (projectId == project.id) {
-            //     console.log('프로젝트' + project);
-            //     const newData = [...myContext.projectData];
-            //     let findIndex = newData.findIndex((item) => item.id == projectId);
-            //     if (findIndex) {
-            //         newData[findIndex] = {
-            //             ...newData[findIndex],
-            //             Task: taskData,
-            //         };
-            //     }
-            //     myContext.setProjectData(newData);
-            // }
-            // }
-            // navigation.navigate('Task', { projectId: projectId });
-            // navigation.goBack();
+            console.log('taskData');
+            const newData = [...myContext.projectData];
+            let findIndex = newData.findIndex((item) => item.id == projectId);
+            newData[findIndex].data = {
+                ...newData[findIndex].data,
+                Task: taskData,
+            };
+            myContext.setProjectData(newData);
+            navigation.goBack();
         } catch (err) {
             console.log(err);
         }

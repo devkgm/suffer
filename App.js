@@ -30,7 +30,7 @@ const Tap = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 export default function App() {
-    const [isLogined, setIsLogined] = useState(true);
+    const [isLogined, setIsLogined] = useState(false);
     const [uid, setUid] = useState(null);
     const [projectId, setProjectId] = useState([]);
     const [projectData, setProjectData] = useState([]);
@@ -60,7 +60,9 @@ export default function App() {
                 setUid(uid);
                 setIsLogined(true);
             }
+            console.log(uid, isLogined);
         };
+
         checkLogin();
     }, []);
     useEffect(() => {
@@ -136,8 +138,8 @@ export default function App() {
     return (
         <AppContext.Provider value={values} style={styles.container}>
             <NavigationContainer>
-                {dataLoaded ? (
-                    isLogined ? (
+                {isLogined ? (
+                    dataLoaded ? (
                         <Stack.Navigator initialRouteName="Tabnavigator">
                             <Stack.Screen
                                 name="Main"
@@ -162,31 +164,31 @@ export default function App() {
                             />
                         </Stack.Navigator>
                     ) : (
-                        <Stack.Navigator initialRouteName="First">
-                            <Stack.Screen
-                                name="First"
-                                component={First}
-                                options={{ headerShown: false }}
-                            />
-                            <Stack.Screen
-                                name="Login"
-                                component={Login}
-                                options={{ headerShown: false }}
-                            />
-                            <Stack.Screen
-                                name="Registration"
-                                component={Registration}
-                                options={{ headerShown: false }}
-                            />
-                            <Stack.Screen
-                                name="회사설정"
-                                component={SetInfomation}
-                                options={{ headerShown: false }}
-                            />
-                        </Stack.Navigator>
+                        <DataLoad />
                     )
                 ) : (
-                    <DataLoad />
+                    <Stack.Navigator initialRouteName="First">
+                        <Stack.Screen
+                            name="First"
+                            component={First}
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="Login"
+                            component={Login}
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="Registration"
+                            component={Registration}
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="회사설정"
+                            component={SetInfomation}
+                            options={{ headerShown: false }}
+                        />
+                    </Stack.Navigator>
                 )}
             </NavigationContainer>
         </AppContext.Provider>
