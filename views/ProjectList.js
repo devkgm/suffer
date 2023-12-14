@@ -34,7 +34,7 @@ export default function ProjectList({ route }) {
                                 userCount={project.data.Member}
                                 isBookmarked={false}
                                 cardColor={project.data.CardColor}
-                                projectId={project.Id}
+                                projectId={project.id}
                                 task={project.data.Task}
                                 index={index}
                             />
