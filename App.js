@@ -74,6 +74,7 @@ export default function App() {
         };
         if (uid) {
             loadProjectData();
+            setIsLogined(true);
         }
     }, [uid]);
 
