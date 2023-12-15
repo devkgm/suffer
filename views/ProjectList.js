@@ -13,11 +13,8 @@ import AppContext from '../AppContext';
 
 const Tap = createBottomTabNavigator();
 
-export default function ProjectList({ route }) {
-    const { projectData } = route.params;
-    const [projects, setProjects] = useState([]);
+export default function ProjectList() {
     const myContext = useContext(AppContext);
-    useEffect(() => {}, []);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -26,16 +23,12 @@ export default function ProjectList({ route }) {
 
             <ScrollView style={styles.scrollContainer}>
                 <View style={styles.cardContainer}>
-                    {projectData.map((project, index) => {
+                    {myContext.projectData.map((project, index) => {
                         return (
                             <ProjectCard
                                 key={index}
-                                title={project.data.Title}
-                                userCount={project.data.Member}
-                                isBookmarked={false}
-                                cardColor={project.data.CardColor}
                                 projectId={project.id}
-                                task={project.data.Task}
+                                projectData={project.data}
                                 index={index}
                             />
                         );

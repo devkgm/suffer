@@ -2,41 +2,34 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
-export default ProjectCard = ({
-    title,
-    cardColor,
-    userCount,
-    isBookmarked,
-    projectId,
-    task,
-    index,
-}) => {
+export default ProjectCard = ({ projectId, projectData, index }) => {
+    const { Title, Task, Member, CardColor } = projectData;
+    console.log(projectData);
     const screenWidth = Dimensions.get('window').width;
     const cardWidth = screenWidth * 0.5 - 20; // 화면 너비의 절반
     const navigation = useNavigation();
     const handlePressProject = () => {
-        navigation.navigate('Task', {
-            projectId: projectId,
-            projectTitle: title,
-            task: task,
-            index: index,
+        navigation.navigate('TaskNavigation', {
+            projectId,
+            projectData,
+            index,
         });
     };
     const onBookmarkPress = ({}) => {};
     return (
         <TouchableOpacity
             activeOpacity={0.4}
-            style={[styles.card, { width: cardWidth, borderLeftColor: cardColor }]}
+            style={[styles.card, { width: cardWidth, borderLeftColor: CardColor }]}
             onPress={() => handlePressProject()}
         >
             <View style={styles.cardContent}>
-                <Text style={styles.title}>{title}</Text>
+                <Text style={styles.title}>{Title}</Text>
                 <View style={styles.userCount}>
                     <Icon name="users" size={16} color="#666" />
-                    <Text style={styles.userCountText}>{userCount}</Text>
+                    <Text style={styles.userCountText}>{Member.length}</Text>
                 </View>
                 <TouchableOpacity style={styles.bookmark}>
-                    {isBookmarked ? (
+                    {true ? (
                         <Icon name="star" size={24} color="#FFD700" /> // 별 아이콘 표시 (FontAwesome의 'star' 아이콘 사용)
                     ) : (
                         <Icon name="star-o" size={24} color="#FFD700" /> // 빈 별 아이콘 표시
