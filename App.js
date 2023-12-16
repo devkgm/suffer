@@ -1,33 +1,16 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import First from './views/First';
-import ProjectList from './views/ProjectList';
-import Work from './views/Work';
-import Chatting from './views/Chatting';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
 import { useState } from 'react';
 import AppContext from './AppContext';
-import Addon from './views/Addon';
-import Alram from './views/Alram';
-import Login from './views/Login';
 import { LogBox } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Registration from './views/Registration';
-import SetInfomation from './views/SetInfomation';
 import { getData, storeData } from './modules/storage';
-import Task from './views/Task';
-import CreateTask from './views/CreateTask';
-import { db } from './firebase/firebaseConfig';
-import getProject from './modules/getProject';
 import getAllProjectData from './modules/getAllProjectData';
-import getTask from './modules/getTask';
 import DataLoad from './components/DataLoad';
+import InitNavigation from './navigation/InitNavigation';
+import HomeNavigation from './navigation/HomeNavigation';
 LogBox.ignoreLogs(['Sending `onAnimatedValueUpdate` with no listeners registered.']);
-
-const Tap = createBottomTabNavigator();
-const Stack = createStackNavigator();
+LogBox.ignoreLogs(['Non-serializable values were found in the navigation state.']);
 
 export default function App() {
     const [isLogined, setIsLogined] = useState(false);
@@ -71,6 +54,7 @@ export default function App() {
             const data = await getAllProjectData(uid);
             setProjectData(data);
             setDataLoaded(true);
+            console.log('이름' + name);
         };
         if (uid) {
             loadProjectData();
@@ -78,118 +62,17 @@ export default function App() {
         }
     }, [uid]);
 
-    const Tabnavigator = () => (
-        <Tap.Navigator
-            initialRouteName="ProjectList"
-            screenOptions={{
-                tabBarStyle: {
-                    marginBottom: 10,
-                },
-                tabBarLabelStyle: {
-                    fontWeight: 'bold',
-                },
-                tabBarActiveTintColor: '#9A2AFF',
-                tabBarInactiveTintColor: 'gray',
-            }}
-        >
-            <Tap.Screen
-                name="프로젝트리스트"
-                component={ProjectList}
-                options={{
-                    headerShown: false,
-                    tabBarIcon: ({ color }) => <Icon name="tasks" color={color} size={20} />,
-                }}
-                initialParams={{ projectData: projectData }}
-            />
-            <Tap.Screen
-                name="업무"
-                component={Work}
-                options={{
-                    headerShown: false,
-                    tabBarIcon: ({ color }) => <Icon name="tasks" color={color} size={20} />,
-                }}
-            />
-            <Tap.Screen
-                name="채팅"
-                component={Chatting}
-                options={{
-                    headerShown: false,
-                    tabBarIcon: ({ color }) => <Icon name="comment" color={color} size={20} />,
-                }}
-            />
-            <Tap.Screen
-                name="알림"
-                component={Alram}
-                options={{
-                    headerShown: false,
-                    tabBarIcon: ({ color }) => <Icon name="bell" color={color} size={20} />,
-                }}
-            />
-            <Tap.Screen
-                name="더보기"
-                component={Addon}
-                options={{
-                    headerShown: false,
-                    tabBarIcon: ({ color }) => <Icon name="ellipsis-h" color={color} size={20} />,
-                }}
-            />
-        </Tap.Navigator>
-    );
-
     return (
         <AppContext.Provider value={values} style={styles.container}>
             <NavigationContainer>
                 {isLogined ? (
                     dataLoaded ? (
-                        <Stack.Navigator initialRouteName="Tabnavigator">
-                            <Stack.Screen
-                                name="Main"
-                                component={Tabnavigator}
-                                options={{
-                                    headerShown: false,
-                                }}
-                            />
-                            <Stack.Screen
-                                name="Task"
-                                component={Task}
-                                options={{
-                                    headerShown: false,
-                                }}
-                            />
-                            <Stack.Screen
-                                name="업무추가"
-                                component={CreateTask}
-                                options={{
-                                    headerShown: false,
-                                }}
-                            />
-                        </Stack.Navigator>
+                        <HomeNavigation projectData={projectData} />
                     ) : (
                         <DataLoad />
                     )
                 ) : (
-                    <Stack.Navigator initialRouteName="First">
-                        <Stack.Screen
-                            name="First"
-                            component={First}
-                            options={{ headerShown: false }}
-                        />
-                        <Stack.Screen
-                            name="Login"
-                            component={Login}
-                            options={{ headerShown: false }}
-                        />
-                        <Stack.Screen
-                            name="Registration"
-                            component={Registration}
-                            options={{ headerShown: false }}
-                        />
-                        <Stack.Screen
-                            name="회사설정"
-                            component={SetInfomation}
-                            options={{ headerShown: false }}
-                        />
-                    </Stack.Navigator>
+                    <InitNavigation />
                 )}
             </NavigationContainer>
         </AppContext.Provider>

@@ -8,10 +8,10 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { getData, removeData, storeData } from '../modules/storage';
 import { RefreshControl } from 'react-native';
 import AppContext from '../AppContext';
-export default Task = ({ route }) => {
-    const { projectId, projectTitle, task, index } = route.params;
+export default Task = ({ route, navigation }) => {
+    const { projectId, projectData, index } = route.params;
+    console.log(index);
     const [tasks, setTasks] = useState([]);
-    const navigation = useNavigation();
     const [refreshing, setRefreshing] = useState(false);
     const myContext = useContext(AppContext);
 
@@ -35,7 +35,7 @@ export default Task = ({ route }) => {
     };
     useEffect(() => {
         // loadTasks();
-        setTasks(task);
+        setTasks(projectData.Task);
         console.log(projectId, index);
     }, []);
     useFocusEffect(
@@ -45,7 +45,7 @@ export default Task = ({ route }) => {
         }, []),
     );
     const handleAddButton = () => {
-        navigation.navigate('업무추가', { projectId: projectId });
+        navigation.navigate('CreateTask');
     };
     return (
         <SafeAreaView style={styles.container}>
@@ -53,7 +53,7 @@ export default Task = ({ route }) => {
                 <TouchableOpacity activeOpacity={1} onPress={() => navigation.goBack()}>
                     <Ionicons name="arrow-back" size={24} color="black" />
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>{projectTitle}</Text>
+                <Text style={styles.headerTitle}>{projectData.Title}</Text>
             </View>
             <ScrollView
                 style={styles.taskList}

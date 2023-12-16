@@ -1,35 +1,21 @@
 import React, { useState, useContext, useRef } from 'react';
 import AppContext from '../AppContext';
-import {
-    StyleSheet,
-    Text,
-    View,
-    Button,
-    TouchableOpacity,
-    TextInput,
-    Alert,
-    TouchableWithoutFeedback,
-} from 'react-native';
-import LongButton from '../components/LongButton';
-import { auth, db } from '../firebase/firebaseConfig'; // Import your Firebase configuration
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { collection, getDoc, query, where, doc } from 'firebase/firestore';
-import { storeData } from '../modules/storage';
+import { StyleSheet, View, TextInput, TouchableWithoutFeedback, Text } from 'react-native';
 import addTask from '../modules/addTask';
-import { useNavigation } from '@react-navigation/native';
 import getTask from '../modules/getTask';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import TaskRedirectionButton from '../components/TaskRedirectionButton';
+import CreateTaskHead from '../components/CreateTaskHead';
 
-export default function CreateTask({ route }) {
+export default function CreateTask({ route, navigation }) {
     const inputRef1 = useRef(null);
     const inputRef2 = useRef(null);
     const myContext = useContext(AppContext);
     const { projectId } = route.params;
-    const navigation = useNavigation();
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const handleBlur = () => {
         inputRef1.current.blur();
-        inputRef2.current.blur();
     };
     const handleUpload = async () => {
         try {
@@ -54,59 +40,91 @@ export default function CreateTask({ route }) {
             console.log(err);
         }
     };
+    const handleCancle = () => {
+        navigation.goBack();
+    };
 
     return (
-        <TouchableWithoutFeedback onPress={handleBlur}>
-            <View style={styles.container}>
-                <Text style={styles.title}>suffer.</Text>
+        <SafeAreaView>
+            <TouchableWithoutFeedback onPress={handleBlur}>
+                <View style={styles.container}>
+                    <View style={styles.head}>
+                        <CreateTaskHead
+                            leftText="취소"
+                            rightText="게시"
+                            rightHandler={handleUpload}
+                            leftHandler={handleCancle}
+                        />
+                    </View>
 
-                <TextInput
-                    style={styles.input}
-                    placeholder="제목"
-                    autoCapitalize="none"
-                    onChangeText={(title) => setTitle(title)}
-                    value={title}
-                    ref={inputRef1}
-                />
-                <TextInput
-                    style={[styles.input, styles.textarea]}
-                    multiline={true}
-                    numberOfLines={1}
-                    placeholder="본문"
-                    autoCapitalize="none"
-                    // height={200}
-                    onChangeText={(description) => setDescription(description)}
-                    value={description}
-                    ref={inputRef2}
-                />
-                <LongButton
-                    innerText={'게시하기'}
-                    customStyle={{ button: styles.login }}
-                    onPressEvent={handleUpload}
-                />
-            </View>
-        </TouchableWithoutFeedback>
+                    <TextInput
+                        style={[styles.input, styles.title]}
+                        placeholder="업무명을 입력하세요."
+                        autoCapitalize="none"
+                        onChangeText={(title) => setTitle(title)}
+                        value={title}
+                        ref={inputRef1}
+                    />
+                    <View style={styles.addCharge}>
+                        <TaskRedirectionButton placeholder="담당자 추가" icon="user" />
+                    </View>
+                    <View style={styles.addCharge}>
+                        <TaskRedirectionButton
+                            placeholder="업무에 대해 설명해주세요."
+                            icon="pencil"
+                            redirectPage="TaskDescription"
+                            setState={setDescription}
+                            getState={description}
+                        />
+                    </View>
+                    <View>
+                        <Text style={styles.description}>{description}</Text>
+                    </View>
+                </View>
+            </TouchableWithoutFeedback>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         backgroundColor: '#fff',
-        justifyContent: 'center',
-        alignItems: 'center',
+        width: '100%',
+        height: '100%',
     },
-    title: {
-        position: 'absolute',
-        top: 180,
-        fontSize: 60,
+    head: {
+        width: '100%',
+        height: 60,
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        backgroundColor: '#9A2AFF',
+        padding: 10,
+    },
+    logo: {
+        fontSize: 32,
+        color: 'white',
+    },
+    goBack: {
+        fontSize: 16,
+        color: 'white',
+    },
+    submit: {
+        fontSize: 16,
+        color: 'white',
+    },
+    addCharge: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderTopWidth: 1,
     },
     input: {
-        height: 40,
-        margin: 12,
-        borderBottomWidth: 1,
-        width: 300,
-        padding: 10,
+        height: 50,
+        padding: 12,
+        width: '100%',
+    },
+    title: {
+        fontSize: 18,
     },
     textarea: {
         borderWidth: 1,
@@ -116,5 +134,9 @@ const styles = StyleSheet.create({
     login: {
         position: 'absolute',
         bottom: 50,
+    },
+    description: {
+        fontSize: 18,
+        padding: 10,
     },
 });
