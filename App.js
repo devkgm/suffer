@@ -8,7 +8,7 @@ import getProject from './services/getProject';
 import Loading from './screens/Loading';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 export default App = () => {
-    const [isLogin, setIsLogin] = useState(true);
+    const [isLogin, setIsLogin] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const [projects, setProjects] = useState([]);
     const [backgroundColor, setBackgroundColor] = useState('red');
