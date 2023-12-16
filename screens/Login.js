@@ -1,25 +1,41 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import CommonStyles from '../styles/CommonStyles';
+import signIn from '../services/signIn';
+import AuthContext from '../store/AuthContext';
 export default Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const myAuthContext = useContext(AuthContext);
+    const handleSubmit = async () => {
+        const user = await signIn(email.trim(), password.trim());
+        if (user) {
+            myAuthContext.setIsLogin(true);
+            myAuthContext.setUser(user);
+        }
+    };
+
     return (
         <View style={styles.container}>
             <Text style={CommonStyles.mlogo}>suffer.</Text>
             <TextInput
                 style={styles.input}
                 placeholder="이메일"
+                autoCapitalize="none"
                 onChangeText={(text) => setEmail(text)}
                 value={email}
             />
             <TextInput
                 style={styles.input}
                 placeholder="비밀번호"
+                autoCapitalize="none"
                 onChangeText={(text) => setPassword(text)}
                 value={password}
             />
-            <TouchableOpacity style={[styles.button, CommonStyles.longButton]}>
+            <TouchableOpacity
+                style={[styles.button, CommonStyles.longButton]}
+                onPress={() => handleSubmit()}
+            >
                 <Text style={CommonStyles.longButtonText}>로그인 하기</Text>
             </TouchableOpacity>
         </View>

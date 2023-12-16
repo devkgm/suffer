@@ -7,12 +7,31 @@ import ProjectContext from './store/ProjectContext';
 import getProject from './services/getProject';
 import Loading from './screens/Loading';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './services/firebaseConfig';
+import { getData } from './store/storage';
+import AuthContext from './store/AuthContext';
 export default App = () => {
     const [isLogin, setIsLogin] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [user, setUser] = useState(null);
     const [projects, setProjects] = useState([]);
     const [backgroundColor, setBackgroundColor] = useState('red');
-
+    const myAuthContext = useContext(AuthContext);
+    // onAuthStateChanged(auth, (user) => {
+    //     console.log(user);
+    //     if (user) {
+    //         setIsLogin(true);
+    //     } else {
+    //         setIsLogin(false);
+    //     }
+    // });
+    const auth = {
+        user,
+        isLogin,
+        setUser,
+        setIsLogin,
+    };
     const value = {
         projects,
         setProjects,
@@ -23,7 +42,15 @@ export default App = () => {
         setProjects(project);
         setIsLoaded(true);
     };
+    const checkLoginStatus = async () => {
+        const user = await getData('user');
+        if (user) {
+            setUser(user);
+            setIsLogin(true);
+        }
+    };
     useEffect(() => {
+        checkLoginStatus();
         loadProject();
     }, []);
 
@@ -35,19 +62,21 @@ export default App = () => {
                     { backgroundColor: backgroundColor, paddingTop: topInset },
                 ]}
             /> */}
-            <NavigationContainer style={styles.container}>
-                {isLogin ? (
-                    isLoaded ? (
-                        <ProjectContext.Provider value={value}>
-                            <HomeNavigation />
-                        </ProjectContext.Provider>
+            <AuthContext.Provider value={auth}>
+                <NavigationContainer style={styles.container}>
+                    {isLogin ? (
+                        isLoaded ? (
+                            <ProjectContext.Provider value={value}>
+                                <HomeNavigation />
+                            </ProjectContext.Provider>
+                        ) : (
+                            <Loading />
+                        )
                     ) : (
-                        <Loading />
-                    )
-                ) : (
-                    <AuthNavigation />
-                )}
-            </NavigationContainer>
+                        <AuthNavigation />
+                    )}
+                </NavigationContainer>
+            </AuthContext.Provider>
 
             {/* <View style={styles.bottomBackground} /> */}
         </SafeAreaProvider>
