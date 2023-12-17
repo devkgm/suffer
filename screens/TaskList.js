@@ -11,6 +11,7 @@ export default TaskList = ({ route, navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
     const { project } = route.params;
     const myMainContext = useContext(MainContext);
+    const myProjectContext = useContext(ProjectContext);
     const onRefresh = useCallback(() => {
         setRefreshing(true);
         // 데이터 새로고침 로직
@@ -18,12 +19,23 @@ export default TaskList = ({ route, navigation }) => {
             setRefreshing(false);
         });
     }, []);
+    const loadTasks = async () => {
+        console.log('loadTask');
+        const taskData = await getTask(project.id);
+        const newData = myProjectContext.projects;
+        const index = newData.findIndex((item) => item.id == project.id);
+        newData[index].Task = taskData;
+        console.log(newData[index].Task);
+        myProjectContext.setProjects(newData);
+    };
     const handleAddButton = () => {
         navigation.navigate('TaskCreate');
     };
     useFocusEffect(
         useCallback(() => {
+            console.log('hello@@@@@@@@@@@@@@@@@@');
             myMainContext.setBgColor(project.CardColor);
+            loadTasks();
         }, []),
     );
     return (

@@ -15,6 +15,7 @@ export default App = () => {
     const [isLogin, setIsLogin] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const [user, setUser] = useState(null);
+    const [name, setName] = useState(null);
     const [projects, setProjects] = useState([]);
     const [backgroundColor, setBackgroundColor] = useState('red');
     const myAuthContext = useContext(AuthContext);
@@ -29,8 +30,10 @@ export default App = () => {
     const auth = {
         user,
         isLogin,
+        name,
         setUser,
         setIsLogin,
+        setName,
     };
     const value = {
         projects,

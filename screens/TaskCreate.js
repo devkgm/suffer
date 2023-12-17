@@ -1,8 +1,9 @@
 import React, { useState, useContext, useRef } from 'react';
 import { StyleSheet, View, TextInput, TouchableWithoutFeedback, Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import TaskCreateHead from '../components/TaskCreateHead';
 import TaskRedirectionButton from '../components/TaskRedirectionButton';
+import addTask from '../services/addTask';
+import AuthContext from '../store/AuthContext';
 
 export default function TaskCreate({ route, navigation }) {
     const inputRef1 = useRef(null);
@@ -10,7 +11,7 @@ export default function TaskCreate({ route, navigation }) {
     const { projectId } = route.params;
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-
+    const myAuthContext = useContext(AuthContext);
     const handleBlur = () => {
         inputRef1.current.blur();
     };
@@ -18,7 +19,18 @@ export default function TaskCreate({ route, navigation }) {
     const handleCancle = () => {
         navigation.goBack();
     };
-    const handleUpload = () => {};
+    const handleUpload = async () => {
+        await addTask(
+            projectId,
+            myAuthContext.name,
+            myAuthContext.user.uid,
+            (Charge = []),
+            description,
+            (Status = 0),
+            title,
+        );
+        navigation.goBack();
+    };
 
     return (
         <TouchableWithoutFeedback onPress={handleBlur}>

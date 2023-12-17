@@ -1,4 +1,4 @@
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { db } from './firebaseConfig';
 
 export default getComment = async (projectId, taskId) => {
@@ -7,12 +7,15 @@ export default getComment = async (projectId, taskId) => {
     let commentData;
 
     try {
-        const commentRef = collection(db, 'project', projectId, 'task', taskId, 'comment');
+        const commentRef = query(
+            collection(db, 'project', projectId, 'task', taskId, 'comment'),
+            orderBy('Date', 'desc'),
+        );
         const commentSnapshots = await getDocs(commentRef);
         commentData = commentSnapshots.docs.map((doc) => doc.data());
-        commentData.sort((a, b) => {
-            return b.Date.seconds - a.Date.seconds;
-        });
+        // commentData.sort((a, b) => {
+        //     return b.Date.seconds - a.Date.seconds;
+        // });
     } catch (error) {
         console.error(new Error(error));
     }
