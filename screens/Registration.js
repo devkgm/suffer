@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import CommonStyles from '../styles/CommonStyles';
 import registration from '../services/registration';
-export default Registration = () => {
+export default Registration = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
 
     const handleSubmit = async () => {
-        if (!isSamePassword) {
+        if (!isSamePassword(password, passwordCheck)) {
             Alert.alert('비밀번호가 일치하지 않습니다.');
         } else if (!isValidEmail(email)) {
             Alert.alert('유효하지 않은 이메일', '올바른 이메일 주소를 입력하세요.');
@@ -18,7 +18,8 @@ export default Registration = () => {
                 '비밀번호는 최소 6자 이상, 영문, 숫자, 특수 기호를 포함해야 합니다.',
             );
         } else {
-            const user = registration(email.trim(), password.trim());
+            const user = await registration(email.trim(), password.trim());
+            navigation.navigate('FirstSetting');
         }
     };
     const isSamePassword = (password, passwordCheck) => {

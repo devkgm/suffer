@@ -38,7 +38,7 @@ export default App = () => {
         setBackgroundColor,
     };
     const loadProject = async () => {
-        const project = await getProject('QyuJA1y5P9Zl1yIMTWKplHErAGi1');
+        const project = await getProject(user.uid);
         setProjects(project);
         setIsLoaded(true);
     };
@@ -51,8 +51,15 @@ export default App = () => {
     };
     useEffect(() => {
         checkLoginStatus();
-        loadProject();
     }, []);
+    useEffect(() => {
+        console.log(isLogin);
+        console.log(user);
+        if (isLogin && user) {
+            console.log(isLogin, user);
+            loadProject();
+        }
+    }, [isLogin, user]);
 
     return (
         <SafeAreaProvider>

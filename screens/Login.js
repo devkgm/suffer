@@ -3,6 +3,7 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-nativ
 import CommonStyles from '../styles/CommonStyles';
 import signIn from '../services/signIn';
 import AuthContext from '../store/AuthContext';
+import { storeData } from '../store/storage';
 export default Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -12,6 +13,7 @@ export default Login = () => {
         if (user) {
             myAuthContext.setIsLogin(true);
             myAuthContext.setUser(user);
+            storeData('user', user);
         }
     };
 
