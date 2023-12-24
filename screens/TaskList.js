@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { RefreshControl } from 'react-native';
-import TaskCard from '../components/TaskCard';
+import TaskCard from '../components/Task/TaskCard';
 import ProjectContext from '../store/ProjectContext';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import MainContext from '../store/MainContext';

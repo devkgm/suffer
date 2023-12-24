@@ -24,7 +24,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: '#fff',
-        padding: 16,
+        paddingLeft: 16,
+        paddingRight: 16,
     },
 
     logo: {

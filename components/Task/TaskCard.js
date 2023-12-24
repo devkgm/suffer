@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import Comment from './Comment';
+import Comment from '../Comment';
 
 function TaskCard({ task }) {
     let date = new Date(task.Date.seconds * 1000).toLocaleString('ko-KR');
