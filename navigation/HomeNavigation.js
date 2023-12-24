@@ -7,6 +7,7 @@ import { View } from 'react-native';
 import { useContext, useState } from 'react';
 import ProjectContext from '../store/ProjectContext';
 import MainContext from '../store/MainContext';
+import Attendance from '../screens/Attendance';
 const Stack = createStackNavigator();
 
 export default HomeNavigation = () => {
@@ -28,6 +29,7 @@ export default HomeNavigation = () => {
                 <Stack.Screen name="TabNavigation" component={TabNavigation} />
                 <Stack.Screen name="TaskNavigation" component={TaskNavigation} />
                 <Stack.Screen name="ProjectCreate" component={ProjectCreate} />
+                <Stack.Screen name="Attendance" component={Attendance} />
             </Stack.Navigator>
         </MainContext.Provider>
     );
