@@ -1,6 +1,6 @@
 import { TouchableWithoutFeedback, View, Text, StyleSheet } from 'react-native';
 
-export default TaskCreateHead = ({ leftText, rightText, leftHandler, rightHandler }) => {
+export default CreateHead = ({ leftText, rightText, leftHandler, rightHandler }) => {
     return (
         <View style={styles.head}>
             <TouchableWithoutFeedback onPress={() => leftHandler()}>

@@ -5,6 +5,7 @@ import { useContext, useState } from 'react';
 import ProjectContext from '../store/ProjectContext';
 import TaskCreate from '../screens/TaskCreate';
 import TaskDescription from '../screens/TaskDescription';
+import OrderCreate from '../screens/OrderCreate';
 
 const Stack = createStackNavigator();
 
@@ -25,6 +26,11 @@ export default TaskNavigation = ({ route }) => {
             <Stack.Screen
                 name="TaskCreate"
                 component={TaskCreate}
+                initialParams={{ projectId: projectId }}
+            />
+            <Stack.Screen
+                name="OrderCreate"
+                component={OrderCreate}
                 initialParams={{ projectId: projectId }}
             />
             <Stack.Screen name="TaskDescription" component={TaskDescription} />

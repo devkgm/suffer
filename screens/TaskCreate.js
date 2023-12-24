@@ -1,6 +1,6 @@
 import React, { useState, useContext, useRef } from 'react';
 import { StyleSheet, View, TextInput, TouchableWithoutFeedback, Text } from 'react-native';
-import TaskCreateHead from '../components/Task/TaskCreateHead';
+import CreateHead from '../components/Common/CreateHead';
 import TaskRedirectionButton from '../components/Task/TaskRedirectionButton';
 import addTask from '../services/addTask';
 import AuthContext from '../store/AuthContext';
@@ -36,7 +36,7 @@ export default function TaskCreate({ route, navigation }) {
         <TouchableWithoutFeedback onPress={handleBlur}>
             <View style={styles.container}>
                 <View style={styles.head}>
-                    <TaskCreateHead
+                    <CreateHead
                         leftText="취소"
                         rightText="게시"
                         rightHandler={handleUpload}

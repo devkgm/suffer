@@ -1,6 +1,6 @@
 import React, { useState, useContext, useRef } from 'react';
 import { StyleSheet, View, TextInput, TouchableWithoutFeedback, Text } from 'react-native';
-import TaskCreateHead from '../components/Task/TaskCreateHead';
+import TaskCreateHead from '../components/Common/CreateHead';
 import TaskRedirectionButton from '../components/Task/TaskRedirectionButton';
 
 export default function ProjectCreate({ route, navigation }) {

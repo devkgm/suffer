@@ -1,6 +1,6 @@
 import { SafeAreaView, View, TextInput } from 'react-native';
 import { useEffect, useState } from 'react';
-import TaskCreateHead from '../components/Task/TaskCreateHead';
+import TaskCreateHead from '../components/Common/CreateHead';
 
 export default TaskDescription = ({ route, navigation }) => {
     const [description, setDescription] = useState('');
