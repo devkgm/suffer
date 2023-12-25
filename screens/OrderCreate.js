@@ -5,17 +5,10 @@ import AuthContext from '../store/AuthContext';
 import Dropdown from '../components/Common/Dropdown';
 
 export default function OrderCreate({ route, navigation }) {
-    const inputRef1 = useRef(null);
     const { projectId } = route.params;
     const myAuthContext = useContext(AuthContext);
-    const pickerRef = useRef();
     const [product, setProduct] = useState('');
     const [amount, setAmount] = useState('');
-
-    const handleBlur = () => {
-        // inputRef1.current.blur();
-        pickerRef.current.blur();
-    };
 
     const handleCancle = () => {
         navigation.goBack();
