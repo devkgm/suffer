@@ -7,7 +7,6 @@ export default getProject = async (uid) => {
     //유저가 보유중인 프로젝트 레퍼런스 가져오기
     //프로젝트데이터 가져오기
     console.log('getProject Start');
-    console.log(uid);
     const startTime = Date.now();
     const userRef = doc(db, 'user', uid);
     const projectData = [];
