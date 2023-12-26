@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'; // FontAwesome 아이콘 사용 예시
 
-const TopNav = () => {
+export default TopNav = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.logo}>suffer.</Text>
@@ -24,7 +24,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: '#fff',
-        padding: 16,
+        paddingLeft: 16,
+        paddingRight: 16,
     },
 
     logo: {
@@ -42,5 +43,3 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 });
-
-export default TopNav;

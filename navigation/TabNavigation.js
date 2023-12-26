@@ -1,20 +1,18 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import ProjectList from '../views/ProjectList';
-import Chatting from '../views/Chatting';
-import Alram from '../views/Alram';
-import Addon from '../views/Addon';
-import MyTask from '../views/MyTask';
+import MyTask from '../screens/MyTask';
+import Chatting from '../screens/Chatting';
+import Alarm from '../screens/Alarm';
+import Addon from '../screens/Addon';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import ProjectList from '../screens/ProjectList';
+const Tab = createBottomTabNavigator();
 
-const Tap = createBottomTabNavigator();
-export default TabNavigation = ({ projectData }) => {
+export default TabNavigation = () => {
     return (
-        <Tap.Navigator
+        <Tab.Navigator
             initialRouteName="ProjectList"
             screenOptions={{
-                tabBarStyle: {
-                    marginBottom: 10,
-                },
+                tabBarStyle: {},
                 tabBarLabelStyle: {
                     fontWeight: 'bold',
                 },
@@ -23,42 +21,46 @@ export default TabNavigation = ({ projectData }) => {
                 headerShown: false,
             }}
         >
-            <Tap.Screen
+            <Tab.Screen
                 name="ProjectList"
                 component={ProjectList}
                 options={{
-                    tabBarIcon: ({ color }) => <Icon name="tasks" color={color} size={20} />,
+                    title: '프로젝트',
+                    tabBarIcon: ({ color }) => <Icon name="archive" color={color} size={20} />,
                 }}
-                initialParams={{ projectData: projectData }}
             />
-            <Tap.Screen
+            <Tab.Screen
                 name="MyTask"
                 component={MyTask}
                 options={{
+                    title: '업무',
                     tabBarIcon: ({ color }) => <Icon name="tasks" color={color} size={20} />,
                 }}
             />
-            <Tap.Screen
+            <Tab.Screen
                 name="Chatting"
                 component={Chatting}
                 options={{
-                    tabBarIcon: ({ color }) => <Icon name="comment" color={color} size={20} />,
+                    title: '채팅',
+                    tabBarIcon: ({ color }) => <Icon name="comment-o" color={color} size={20} />,
                 }}
             />
-            <Tap.Screen
-                name="Alram"
-                component={Alram}
+            <Tab.Screen
+                name="Alarm"
+                component={Alarm}
                 options={{
-                    tabBarIcon: ({ color }) => <Icon name="bell" color={color} size={20} />,
+                    title: '알림',
+                    tabBarIcon: ({ color }) => <Icon name="bell-o" color={color} size={20} />,
                 }}
             />
-            <Tap.Screen
+            <Tab.Screen
                 name="Addon"
                 component={Addon}
                 options={{
+                    title: '더보기',
                     tabBarIcon: ({ color }) => <Icon name="ellipsis-h" color={color} size={20} />,
                 }}
             />
-        </Tap.Navigator>
+        </Tab.Navigator>
     );
 };

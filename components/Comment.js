@@ -1,19 +1,16 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-export default Comment = ({ taskComment }) => {
-    if (taskComment) {
-        return taskComment.map((comment, index) => (
-            <View key={index} style={styles.container}>
-                <View style={styles.head}>
-                    <Text style={styles.author}>{comment.author}</Text>
-                    <Text style={styles.date}>{comment.date}</Text>
-                </View>
-                <Text style={styles.description}>{comment.description}</Text>
+export default Comment = ({ comment }) => {
+    let date = new Date(comment.Date.seconds * 1000).toLocaleString('ko-KR');
+    return (
+        <View style={styles.container}>
+            <View style={styles.head}>
+                <Text style={styles.author}>{comment.Author}</Text>
+                <Text style={styles.date}>{date}</Text>
             </View>
-        ));
-    } else {
-        return;
-    }
+            <Text style={styles.description}>{comment.Description}</Text>
+        </View>
+    );
 };
 
 styles = StyleSheet.create({

@@ -1,84 +1,119 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { useContext, useEffect, useState } from 'react';
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import AuthNavigation from './navigation/AuthNavigation';
 import { NavigationContainer } from '@react-navigation/native';
-import { useState } from 'react';
-import AppContext from './AppContext';
-import { LogBox } from 'react-native';
-import { getData, storeData } from './modules/storage';
-import getAllProjectData from './modules/getAllProjectData';
-import DataLoad from './components/DataLoad';
-import InitNavigation from './navigation/InitNavigation';
 import HomeNavigation from './navigation/HomeNavigation';
-LogBox.ignoreLogs(['Sending `onAnimatedValueUpdate` with no listeners registered.']);
-LogBox.ignoreLogs(['Non-serializable values were found in the navigation state.']);
-
-export default function App() {
-    const [isLogined, setIsLogined] = useState(false);
-    const [uid, setUid] = useState(null);
-    const [projectId, setProjectId] = useState([]);
-    const [projectData, setProjectData] = useState([]);
-    const [dataLoaded, setDataLoaded] = useState(false);
-    const [name, setName] = useState('');
-
-    //context값
-    const values = {
-        isLogined: isLogined,
-        projectId: projectId,
-        projectData: projectData,
-        uid: uid,
-        name: name,
-        setIsLogined,
-        setUid,
+import ProjectContext from './store/ProjectContext';
+import getProject from './services/getProject';
+import Loading from './screens/Loading';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './services/firebaseConfig';
+import { getData } from './store/storage';
+import AuthContext from './store/AuthContext';
+export default App = () => {
+    const [isLogin, setIsLogin] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [user, setUser] = useState(null);
+    const [name, setName] = useState(null);
+    const [projects, setProjects] = useState([]);
+    const [backgroundColor, setBackgroundColor] = useState('red');
+    const myAuthContext = useContext(AuthContext);
+    // onAuthStateChanged(auth, (user) => {
+    //     console.log(user);
+    //     if (user) {
+    //         setIsLogin(true);
+    //     } else {
+    //         setIsLogin(false);
+    //     }
+    // });
+    const auth = {
+        user,
+        isLogin,
+        name,
+        setUser,
+        setIsLogin,
         setName,
-        setProjectData,
+    };
+    const value = {
+        projects,
+        setProjects,
+        setBackgroundColor,
+    };
+    const loadProject = async () => {
+        const project = await getProject(user.uid);
+        setProjects(project);
+        setIsLoaded(true);
+    };
+    const checkLoginStatus = async () => {
+        const user = await getData('user');
+        if (user) {
+            setUser(user);
+            setIsLogin(true);
+        }
     };
     useEffect(() => {
-        console.log('App Loaded');
-        //로그인 확인
-        const checkLogin = async () => {
-            if (uid == null) {
-                setUid(await getData('UID'));
-            }
-            if (uid) {
-                setUid(uid);
-                setIsLogined(true);
-            }
-            console.log(uid, isLogined);
-        };
-
-        checkLogin();
+        checkLoginStatus();
     }, []);
     useEffect(() => {
-        //프로젝트 데이터 받아오기
-        const loadProjectData = async () => {
-            const data = await getAllProjectData(uid);
-            setProjectData(data);
-            setDataLoaded(true);
-            console.log('이름' + name);
-        };
-        if (uid) {
-            loadProjectData();
-            setIsLogined(true);
+        console.log(isLogin);
+        console.log(user);
+        if (isLogin && user) {
+            console.log(isLogin, user);
+            loadProject();
         }
-    }, [uid]);
+    }, [isLogin, user]);
 
     return (
-        <AppContext.Provider value={values} style={styles.container}>
-            <NavigationContainer>
-                {isLogined ? (
-                    dataLoaded ? (
-                        <HomeNavigation projectData={projectData} />
+        <SafeAreaProvider>
+            {/* <View
+                style={[
+                    styles.topBackground,
+                    { backgroundColor: backgroundColor, paddingTop: topInset },
+                ]}
+            /> */}
+            <AuthContext.Provider value={auth}>
+                <NavigationContainer style={styles.container}>
+                    {isLogin ? (
+                        isLoaded ? (
+                            <ProjectContext.Provider value={value}>
+                                <HomeNavigation />
+                            </ProjectContext.Provider>
+                        ) : (
+                            <Loading />
+                        )
                     ) : (
-                        <DataLoad />
-                    )
-                ) : (
-                    <InitNavigation />
-                )}
-            </NavigationContainer>
-        </AppContext.Provider>
+                        <AuthNavigation />
+                    )}
+                </NavigationContainer>
+            </AuthContext.Provider>
+
+            {/* <View style={styles.bottomBackground} /> */}
+        </SafeAreaProvider>
     );
-}
+};
 
 const styles = StyleSheet.create({
-    container: { backgroundColor: 'white' },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+    },
+    topBackground: {
+        // position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        // height: 50,
+        zIndex: -1,
+    },
+
+    bottomBackground: {
+        position: 'absolute',
+        backgroundColor: '#fff',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: 100,
+        zIndex: -1,
+    },
 });

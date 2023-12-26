@@ -1,32 +1,28 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
-export default ProjectCard = ({ projectId, projectData, index }) => {
-    const { Title, Task, Member, CardColor } = projectData;
-    console.log(projectData);
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+export default ProjectCard = ({ project }) => {
     const screenWidth = Dimensions.get('window').width;
     const cardWidth = screenWidth * 0.5 - 20; // 화면 너비의 절반
     const navigation = useNavigation();
-    const handlePressProject = () => {
-        navigation.navigate('TaskNavigation', {
-            projectId,
-            projectData,
-            index,
-        });
+
+    const handlePress = () => {
+        navigation.navigate('TaskNavigation', { projectId: project.id });
     };
-    const onBookmarkPress = ({}) => {};
+
     return (
         <TouchableOpacity
             activeOpacity={0.4}
-            style={[styles.card, { width: cardWidth, borderLeftColor: CardColor }]}
-            onPress={() => handlePressProject()}
+            style={[styles.card, { width: cardWidth, borderLeftColor: project.CardColor }]}
+            onPress={() => handlePress()}
         >
             <View style={styles.cardContent}>
-                <Text style={styles.title}>{Title}</Text>
+                <Text style={styles.title}>{project.Title}</Text>
                 <View style={styles.userCount}>
                     <Icon name="users" size={16} color="#666" />
-                    <Text style={styles.userCountText}>{Member.length}</Text>
+                    <Text style={styles.userCountText}>{project.Member.length}</Text>
                 </View>
                 <TouchableOpacity style={styles.bookmark}>
                     {true ? (
@@ -66,6 +62,8 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 18,
         fontWeight: 'bold',
+        width: '80%',
+        height: '70%',
     },
     userCount: {
         flexDirection: 'row',
