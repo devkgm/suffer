@@ -13,7 +13,6 @@ export default signIn = async (email, password) => {
             body: JSON.stringify({ email: email, password: password }),
         });
         const data = await response.json();
-        console.log(data);
         storeData('user', data.user);
         storeData('accessToken', data.accessToken);
         storeData('refreshToken', data.refreshToken);
