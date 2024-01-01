@@ -4,7 +4,7 @@ import Comment from '../Comment';
 
 function TaskCard({ task }) {
     const STATUS = ['요청', '완료'];
-    let date = new Date(task.CREATE_DT.seconds * 1000).toLocaleString('ko-KR');
+    let date = new Date(task.CREATE_DT).toLocaleString('ko-KR');
     return (
         <TouchableOpacity style={styles.container}>
             <View style={styles.header}>

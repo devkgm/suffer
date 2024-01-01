@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 export default Comment = ({ comment }) => {
-    let date = new Date(comment.CREATE_DT.seconds * 1000).toLocaleString('ko-KR');
+    let date = new Date(comment.CREATE_DT).toLocaleString('ko-KR');
     return (
         <View style={styles.container}>
             <View style={styles.head}>
