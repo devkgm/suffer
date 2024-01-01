@@ -2,8 +2,6 @@ import { useContext, useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import CommonStyles from '../styles/CommonStyles';
 import AuthContext from '../store/AuthContext';
-import { auth, db } from '../services/firebaseConfig';
-import { doc, setDoc } from 'firebase/firestore';
 import checkCompany from '../services/checkCompany';
 export default FirstSetting = () => {
     const [name, setName] = useState('');
@@ -11,22 +9,6 @@ export default FirstSetting = () => {
     const user = auth.currentUser;
     const myAuthContext = useContext(AuthContext);
     const handleSubmit = async () => {
-        try {
-            const docRef = doc(db, 'user', user.uid);
-            await setDoc(docRef, {
-                Company: company,
-                uid: user.uid,
-                Name: name,
-                ProjectId: [],
-                favoriteProject: [],
-            });
-            myAuthContext.setIsLogin(true);
-            myAuthContext.setUser(user);
-            storeData('user', user);
-        } catch (error) {
-            console.log(error);
-        }
-
         // checkCompany(company);
     };
 

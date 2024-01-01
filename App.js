@@ -6,8 +6,6 @@ import HomeNavigation from './navigation/HomeNavigation';
 import getProjectList from './services/getProjectList';
 import Loading from './screens/Loading';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './services/firebaseConfig';
 import { getData } from './store/storage';
 import AuthContext from './store/AuthContext';
 export default App = () => {

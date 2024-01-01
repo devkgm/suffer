@@ -1,5 +1,3 @@
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from './firebaseConfig';
 import getComment from './getComment';
 export default getTask = async (projectId) => {
     console.log('getTask Start');
