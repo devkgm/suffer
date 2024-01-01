@@ -3,7 +3,7 @@ import { Alert } from 'react-native';
 
 export default signIn = async (email, password) => {
     try {
-        const response = await fetch('http://192.168.45.212:3000/login', {
+        const response = await fetch('http://192.168.45.57:3000/login', {
             method: 'POST',
             mode: 'cors',
             headers: {
@@ -13,7 +13,7 @@ export default signIn = async (email, password) => {
             body: JSON.stringify({ email: email, password: password }),
         });
         const data = await response.json();
-        console.log(data);
+        data.user.info = data.info;
         storeData('user', data.user);
         storeData('accessToken', data.accessToken);
         storeData('refreshToken', data.refreshToken);

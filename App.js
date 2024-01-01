@@ -3,12 +3,9 @@ import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import AuthNavigation from './navigation/AuthNavigation';
 import { NavigationContainer } from '@react-navigation/native';
 import HomeNavigation from './navigation/HomeNavigation';
-import ProjectContext from './store/ProjectContext';
-import getProject from './services/getProject';
+import getProjectList from './services/getProjectList';
 import Loading from './screens/Loading';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './services/firebaseConfig';
 import { getData } from './store/storage';
 import AuthContext from './store/AuthContext';
 export default App = () => {
@@ -41,8 +38,8 @@ export default App = () => {
         setBackgroundColor,
     };
     const loadProject = async () => {
-        const project = await getProject(user.uid);
-        setProjects(project);
+        const project = await getProjectList(user);
+        // setProjects(project);
         setIsLoaded(true);
     };
     const checkLoginStatus = async () => {
@@ -74,17 +71,7 @@ export default App = () => {
             /> */}
             <AuthContext.Provider value={auth}>
                 <NavigationContainer style={styles.container}>
-                    {isLogin ? (
-                        isLoaded ? (
-                            <ProjectContext.Provider value={value}>
-                                <HomeNavigation />
-                            </ProjectContext.Provider>
-                        ) : (
-                            <Loading />
-                        )
-                    ) : (
-                        <AuthNavigation />
-                    )}
+                    {isLogin ? isLoaded ? <HomeNavigation /> : <Loading /> : <AuthNavigation />}
                 </NavigationContainer>
             </AuthContext.Provider>
 

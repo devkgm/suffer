@@ -2,7 +2,6 @@ import { TouchableOpacity, Text, View, Alert } from 'react-native';
 import { storeData } from '../../store/storage';
 import { useContext } from 'react';
 import AuthContext from '../../store/AuthContext';
-import logOut from '../../services/logOut';
 import AddonStyles from '../../styles/AddonStyles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -13,9 +12,10 @@ export default LogoutButton = () => {
             {
                 text: '로그아웃',
                 onPress: () => {
-                    logOut();
                     myAuthContext.setIsLogin(false);
                     myAuthContext.setUser(null);
+                    storeData('accessToken', null);
+                    storeData('refreshToken', null);
                     storeData('user', null);
                 },
             },

@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 export default Comment = ({ comment }) => {
-    let date = new Date(comment.Date.seconds * 1000).toLocaleString('ko-KR');
+    let date = new Date(comment.CREATE_DT).toLocaleString('ko-KR');
     return (
         <View style={styles.container}>
             <View style={styles.head}>
-                <Text style={styles.author}>{comment.Author}</Text>
+                <Text style={styles.author}>{comment.USER_ID}</Text>
                 <Text style={styles.date}>{date}</Text>
             </View>
-            <Text style={styles.description}>{comment.Description}</Text>
+            <Text style={styles.description}>{comment.DESCRIPTION}</Text>
         </View>
     );
 };

@@ -1,16 +1,17 @@
 import { SafeAreaView, View, TextInput } from 'react-native';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import TaskCreateHead from '../components/Common/CreateHead';
+import ProjectContext from '../store/ProjectContext';
 
-export default TaskDescription = ({ route, navigation }) => {
+export default EditDescription = ({ route, navigation }) => {
     const [description, setDescription] = useState('');
-    const { setState, getState } = route.params;
+    const myContext = useContext(ProjectContext);
     const rightHandler = () => {
-        setState(description);
+        myContext.setDescription(description);
         navigation.goBack();
     };
     useEffect(() => {
-        setDescription(getState);
+        setDescription(myContext.description);
     }, []);
     const leftHandler = () => {
         navigation.goBack();

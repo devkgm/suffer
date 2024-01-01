@@ -1,5 +1,3 @@
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from './firebaseConfig';
 import getComment from './getComment';
 export default getTask = async (projectId) => {
     console.log('getTask Start');
@@ -7,22 +5,8 @@ export default getTask = async (projectId) => {
     let taskData = [];
 
     try {
-        const taskRef = collection(db, 'project', projectId, 'task');
-        const taskSnapshots = await getDocs(taskRef);
-        const docs = taskSnapshots.docs;
-        for (const doc of docs) {
-            const task = doc.data();
-            const comment = await getComment(projectId, doc.id);
-            task.Comment = comment;
-            taskData.push(task);
-        }
-
-        // taskData = taskSnapshots.docs.map((doc) => {
-        //     return doc.data();
-        // });
-        taskData.sort((a, b) => {
-            return b.Date.seconds - a.Date.seconds;
-        });
+        const response = await fetch('http://192.168.45.57:3000/projects/' + projectId);
+        taskData = await response.json();
     } catch (error) {
         console.error(new Error(error));
     }

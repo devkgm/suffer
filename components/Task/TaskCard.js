@@ -3,28 +3,33 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Comment from '../Comment';
 
 function TaskCard({ task }) {
-    let date = new Date(task.Date.seconds * 1000).toLocaleString('ko-KR');
+    const STATUS = ['요청', '완료'];
+    let date = new Date(task.CREATE_DT).toLocaleString('ko-KR');
     return (
         <TouchableOpacity style={styles.container}>
             <View style={styles.header}>
                 <View style={styles.info}>
-                    <Text style={styles.author}>{task.Author}</Text>
+                    <Text style={styles.author}>{task.OWNER_ID}</Text>
                     <Text style={styles.date}>{date}</Text>
                 </View>
 
                 <TouchableOpacity style={styles.status}>
-                    <Text style={styles.statusFont}>{task.Status}</Text>
+                    <Text style={styles.statusFont}>{STATUS[task.STATUS]}</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.body}>
-                <Text style={styles.title}>{task.Title}</Text>
+                <Text style={styles.title}>{task.NAME}</Text>
 
-                <Text>{task.Description}</Text>
+                <Text>{task.DESCRIPTION}</Text>
             </View>
             <View style={styles.comment}>
-                {task.Comment.map((comment, index) => {
-                    return <Comment key={index} comment={comment} />;
-                })}
+                {task.comments ? (
+                    task.comments.map((comment, index) => {
+                        return <Comment key={index} comment={comment} />;
+                    })
+                ) : (
+                    <></>
+                )}
             </View>
         </TouchableOpacity>
     );

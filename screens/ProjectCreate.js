@@ -1,14 +1,17 @@
 import React, { useState, useContext, useRef } from 'react';
 import { StyleSheet, View, TextInput, TouchableWithoutFeedback, Text } from 'react-native';
 import TaskCreateHead from '../components/Common/CreateHead';
-import TaskRedirectionButton from '../components/Task/TaskRedirectionButton';
+import RedirectionButton from '../components/Common/RedirectionButton';
+import ProjectContext from '../store/ProjectContext';
+import addProject from '../services/addProject';
+import AuthContext from '../store/AuthContext';
 
 export default function ProjectCreate({ route, navigation }) {
+    const [title, setTitle] = useState('');
     const inputRef1 = useRef(null);
     const inputRef2 = useRef(null);
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-
+    const myContext = useContext(ProjectContext);
+    const myAuthContext = useContext(AuthContext);
     const handleBlur = () => {
         inputRef1.current.blur();
     };
@@ -16,7 +19,14 @@ export default function ProjectCreate({ route, navigation }) {
     const handleCancle = () => {
         navigation.goBack();
     };
-    const handleUpload = () => {};
+    const handleUpload = async () => {
+        await addProject({
+            user: myAuthContext.user,
+            Title: title,
+            Description: myContext.description,
+        });
+        navigation.goBack();
+    };
 
     return (
         <TouchableWithoutFeedback onPress={handleBlur}>
@@ -39,19 +49,17 @@ export default function ProjectCreate({ route, navigation }) {
                     ref={inputRef1}
                 />
                 <View style={styles.addCharge}>
-                    <TaskRedirectionButton placeholder="팀원 추가" icon="user" />
+                    <RedirectionButton placeholder="팀원 추가" icon="user" />
                 </View>
                 <View style={styles.addCharge}>
-                    <TaskRedirectionButton
-                        placeholder="업무에 대해 설명해주세요."
+                    <RedirectionButton
+                        placeholder="프로젝트에 대해 설명해주세요."
                         icon="pencil"
-                        redirectPage="TaskDescription"
-                        setState={setDescription}
-                        getState={description}
+                        redirectPage="EditDescription"
                     />
                 </View>
                 <View>
-                    <Text style={styles.description}>{description}</Text>
+                    <Text style={styles.description}>{myContext.description}</Text>
                 </View>
             </View>
         </TouchableWithoutFeedback>

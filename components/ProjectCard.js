@@ -9,20 +9,20 @@ export default ProjectCard = ({ project }) => {
     const navigation = useNavigation();
 
     const handlePress = () => {
-        navigation.navigate('TaskNavigation', { projectId: project.id });
+        navigation.navigate('TaskNavigation', { projectId: project.ID, project: project });
     };
 
     return (
         <TouchableOpacity
             activeOpacity={0.4}
-            style={[styles.card, { width: cardWidth, borderLeftColor: project.CardColor }]}
+            style={[styles.card, { width: cardWidth, borderLeftColor: project.CARD_COLOR }]}
             onPress={() => handlePress()}
         >
             <View style={styles.cardContent}>
-                <Text style={styles.title}>{project.Title}</Text>
+                <Text style={styles.title}>{project.TITLE}</Text>
                 <View style={styles.userCount}>
                     <Icon name="users" size={16} color="#666" />
-                    <Text style={styles.userCountText}>{project.Member.length}</Text>
+                    <Text style={styles.userCountText}>{project.member}</Text>
                 </View>
                 <TouchableOpacity style={styles.bookmark}>
                     {true ? (
