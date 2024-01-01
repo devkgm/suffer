@@ -2,16 +2,10 @@ import { useNavigation } from '@react-navigation/native';
 import { TouchableWithoutFeedback, Text, View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default TaskRedirectionButton = ({
-    placeholder,
-    redirectPage,
-    icon,
-    setState,
-    getState,
-}) => {
+export default RedirectionButton = ({ placeholder, redirectPage, icon }) => {
     const navigation = useNavigation();
     const handlePress = () => {
-        navigation.navigate(redirectPage, { setState: setState, getState: getState });
+        navigation.navigate(redirectPage);
     };
     return (
         <TouchableWithoutFeedback onPress={handlePress}>

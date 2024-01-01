@@ -19,7 +19,7 @@ export default ProjectCard = ({ project }) => {
             onPress={() => handlePress()}
         >
             <View style={styles.cardContent}>
-                <Text style={styles.title}>{project.NAME}</Text>
+                <Text style={styles.title}>{project.TITLE}</Text>
                 <View style={styles.userCount}>
                     <Icon name="users" size={16} color="#666" />
                     <Text style={styles.userCountText}>{project.member}</Text>

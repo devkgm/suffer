@@ -2,7 +2,6 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { ScrollView, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import ProjectCard from '../components/ProjectCard';
 import TopNav from '../components/TopNav';
-import ProjectContext from '../store/ProjectContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import MainContext from '../store/MainContext';
@@ -10,11 +9,10 @@ import AuthContext from '../store/AuthContext';
 
 export default ProjectList = ({ navigation }) => {
     const [projects, setProjects] = useState([]);
-    const myProjectContext = useContext(ProjectContext);
     const myMainContext = useContext(MainContext);
     const myAuthContext = useContext(AuthContext);
     const handleAddButton = () => {
-        navigation.navigate('ProjectCreate');
+        navigation.navigate('ProjectNavigation');
     };
     useFocusEffect(
         useCallback(() => {

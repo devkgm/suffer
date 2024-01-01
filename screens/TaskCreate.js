@@ -1,7 +1,7 @@
 import React, { useState, useContext, useRef } from 'react';
 import { StyleSheet, View, TextInput, TouchableWithoutFeedback, Text } from 'react-native';
 import CreateHead from '../components/Common/CreateHead';
-import TaskRedirectionButton from '../components/Task/TaskRedirectionButton';
+import RedirectionButton from '../components/Common/RedirectionButton';
 import addTask from '../services/addTask';
 import AuthContext from '../store/AuthContext';
 
@@ -53,13 +53,13 @@ export default function TaskCreate({ route, navigation }) {
                     ref={inputRef1}
                 />
                 <View style={styles.addCharge}>
-                    <TaskRedirectionButton placeholder="담당자 추가" icon="user" />
+                    <RedirectionButton placeholder="담당자 추가" icon="user" />
                 </View>
                 <View style={styles.addCharge}>
-                    <TaskRedirectionButton
+                    <RedirectionButton
                         placeholder="업무에 대해 설명해주세요."
                         icon="pencil"
-                        redirectPage="TaskDescription"
+                        redirectPage="EditDescription"
                         setState={setDescription}
                         getState={description}
                     />

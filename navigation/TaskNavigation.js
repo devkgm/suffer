@@ -2,9 +2,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import TabNavigation from './TabNavigation';
 import TaskList from '../screens/TaskList';
 import { useContext, useEffect, useState } from 'react';
-import ProjectContext from '../store/ProjectContext';
 import TaskCreate from '../screens/TaskCreate';
-import TaskDescription from '../screens/TaskDescription';
+import EditDescription from '../screens/EditDescription';
 import OrderCreate from '../screens/OrderCreate';
 
 const Stack = createStackNavigator();
@@ -12,7 +11,6 @@ const Stack = createStackNavigator();
 //ProjectCard 선택시 프로젝트 id와 함께 넘어옴
 export default TaskNavigation = ({ route }) => {
     const { projectId, project } = route.params;
-    const myProjectContext = useContext(ProjectContext);
 
     return (
         <Stack.Navigator initialRouteName="TaskList" screenOptions={{ headerShown: false }}>
@@ -31,7 +29,7 @@ export default TaskNavigation = ({ route }) => {
                 component={OrderCreate}
                 initialParams={{ projectId: projectId }}
             />
-            <Stack.Screen name="TaskDescription" component={TaskDescription} />
+            <Stack.Screen name="EditDescription" component={EditDescription} />
         </Stack.Navigator>
     );
 };

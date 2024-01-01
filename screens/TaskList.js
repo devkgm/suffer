@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-nati
 import { Ionicons } from '@expo/vector-icons';
 import { RefreshControl } from 'react-native';
 import TaskCard from '../components/Task/TaskCard';
-import ProjectContext from '../store/ProjectContext';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import MainContext from '../store/MainContext';
 import getTask from '../services/getTask';
@@ -13,7 +12,6 @@ export default TaskList = ({ route, navigation }) => {
     const { projectId, project } = route.params;
     const [tasks, setTasks] = useState([]);
     const myMainContext = useContext(MainContext);
-    const myProjectContext = useContext(ProjectContext);
     const onRefresh = useCallback(() => {
         setRefreshing(true);
         // 데이터 새로고침 로직
@@ -41,7 +39,8 @@ export default TaskList = ({ route, navigation }) => {
                 <TouchableOpacity activeOpacity={1} onPress={() => navigation.goBack()}>
                     <Ionicons name="arrow-back" size={24} color="black" />
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>{project.NAME}</Text>
+                <Text style={styles.headerTitle}>{project.TITLE}</Text>
+                <Text style={styles.headerTitle}>{project.DESCRIPTION}</Text>
             </View>
             <ScrollView
                 style={styles.taskList}
