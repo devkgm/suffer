@@ -5,6 +5,7 @@ export default getProjectList = async (user) => {
     try {
         const response = await fetch('http://192.168.45.57:3000/projects/list/' + user.info.ID);
         projectData = await response.json();
+        console.log(projectData);
     } catch (error) {
         console.error(new Error(error));
     }

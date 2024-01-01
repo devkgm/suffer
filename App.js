@@ -42,7 +42,7 @@ export default App = () => {
     };
     const loadProject = async () => {
         const project = await getProjectList(user);
-        setProjects(project);
+        // setProjects(project);
         setIsLoaded(true);
     };
     const checkLoginStatus = async () => {

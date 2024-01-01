@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Comment from '../Comment';
 
 function TaskCard({ task }) {
+    const STATUS = ['요청', '완료'];
     let date = new Date(task.CREATE_DT.seconds * 1000).toLocaleString('ko-KR');
     return (
         <TouchableOpacity style={styles.container}>
@@ -13,7 +14,7 @@ function TaskCard({ task }) {
                 </View>
 
                 <TouchableOpacity style={styles.status}>
-                    {/* <Text style={styles.statusFont}>{task.Status}</Text> */}
+                    <Text style={styles.statusFont}>{STATUS[task.STATUS]}</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.body}>

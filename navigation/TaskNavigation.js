@@ -11,7 +11,7 @@ const Stack = createStackNavigator();
 
 //ProjectCard 선택시 프로젝트 id와 함께 넘어옴
 export default TaskNavigation = ({ route }) => {
-    const { projectId } = route.params;
+    const { projectId, project } = route.params;
     const myProjectContext = useContext(ProjectContext);
 
     return (
@@ -19,7 +19,7 @@ export default TaskNavigation = ({ route }) => {
             <Stack.Screen
                 name="TaskList"
                 component={TaskList}
-                initialParams={{ projectId: projectId }}
+                initialParams={{ projectId: projectId, project: project }}
             />
             <Stack.Screen
                 name="TaskCreate"

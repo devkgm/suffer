@@ -6,27 +6,33 @@ import ProjectContext from '../store/ProjectContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import MainContext from '../store/MainContext';
+import AuthContext from '../store/AuthContext';
 
 export default ProjectList = ({ navigation }) => {
     const [projects, setProjects] = useState([]);
     const myProjectContext = useContext(ProjectContext);
     const myMainContext = useContext(MainContext);
+    const myAuthContext = useContext(AuthContext);
     const handleAddButton = () => {
         navigation.navigate('ProjectCreate');
     };
     useFocusEffect(
         useCallback(() => {
+            loadProject();
             myMainContext.setBgColor('white');
-        }),
+        }, []),
     );
-
+    const loadProject = async () => {
+        const project = await getProjectList(myAuthContext.user);
+        setProjects(project);
+    };
     return (
         <View style={styles.container}>
             <TopNav />
             <Text style={styles.title}>소속된 프로젝트</Text>
             <ScrollView style={styles.scrollContainer}>
                 <View style={styles.cardContainer}>
-                    {myProjectContext.projects.map((project, index) => {
+                    {projects.map((project, index) => {
                         return <ProjectCard key={index} project={project} />;
                     })}
                 </View>

@@ -9,13 +9,13 @@ export default ProjectCard = ({ project }) => {
     const navigation = useNavigation();
 
     const handlePress = () => {
-        navigation.navigate('TaskNavigation', { projectId: project.ID });
+        navigation.navigate('TaskNavigation', { projectId: project.ID, project: project });
     };
 
     return (
         <TouchableOpacity
             activeOpacity={0.4}
-            style={[styles.card, { width: cardWidth, borderLeftColor: project.CardColor }]}
+            style={[styles.card, { width: cardWidth, borderLeftColor: project.CARD_COLOR }]}
             onPress={() => handlePress()}
         >
             <View style={styles.cardContent}>

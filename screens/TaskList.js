@@ -10,7 +10,7 @@ import getTask from '../services/getTask';
 
 export default TaskList = ({ route, navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
-    const { projectId } = route.params;
+    const { projectId, project } = route.params;
     const [tasks, setTasks] = useState([]);
     const myMainContext = useContext(MainContext);
     const myProjectContext = useContext(ProjectContext);
@@ -31,18 +31,18 @@ export default TaskList = ({ route, navigation }) => {
     };
     useFocusEffect(
         useCallback(() => {
-            // myMainContext.setBgColor(project.CardColor);
+            myMainContext.setBgColor(project.CARD_COLOR);
             loadTasks();
         }, []),
     );
     return (
         <View style={styles.container}>
-            {/* <View style={[styles.header, { backgroundColor: project.CardColor }]}>
+            <View style={[styles.header, { backgroundColor: project.CARD_COLOR }]}>
                 <TouchableOpacity activeOpacity={1} onPress={() => navigation.goBack()}>
                     <Ionicons name="arrow-back" size={24} color="black" />
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>{project.Title}</Text>
-            </View> */}
+                <Text style={styles.headerTitle}>{project.NAME}</Text>
+            </View>
             <ScrollView
                 style={styles.taskList}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
