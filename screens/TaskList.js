@@ -6,10 +6,12 @@ import TaskCard from '../components/Task/TaskCard';
 import ProjectContext from '../store/ProjectContext';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import MainContext from '../store/MainContext';
+import getTask from '../services/getTask';
 
 export default TaskList = ({ route, navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
-    const { project } = route.params;
+    const { projectId } = route.params;
+    const [tasks, setTasks] = useState([]);
     const myMainContext = useContext(MainContext);
     const myProjectContext = useContext(ProjectContext);
     const onRefresh = useCallback(() => {
@@ -20,13 +22,8 @@ export default TaskList = ({ route, navigation }) => {
         });
     }, []);
     const loadTasks = async () => {
-        console.log('loadTask');
-        const taskData = await getTask(project.id);
-        const newData = myProjectContext.projects;
-        const index = newData.findIndex((item) => item.id == project.id);
-        newData[index].Task = taskData;
-        console.log(newData[index].Task);
-        myProjectContext.setProjects(newData);
+        const tasks = await getTask(projectId);
+        setTasks(tasks);
     };
     const handleAddButton = () => {
         // navigation.navigate('TaskCreate');
@@ -34,24 +31,23 @@ export default TaskList = ({ route, navigation }) => {
     };
     useFocusEffect(
         useCallback(() => {
-            console.log('hello@@@@@@@@@@@@@@@@@@');
-            myMainContext.setBgColor(project.CardColor);
+            // myMainContext.setBgColor(project.CardColor);
             loadTasks();
         }, []),
     );
     return (
         <View style={styles.container}>
-            <View style={[styles.header, { backgroundColor: project.CardColor }]}>
+            {/* <View style={[styles.header, { backgroundColor: project.CardColor }]}>
                 <TouchableOpacity activeOpacity={1} onPress={() => navigation.goBack()}>
                     <Ionicons name="arrow-back" size={24} color="black" />
                 </TouchableOpacity>
                 <Text style={styles.headerTitle}>{project.Title}</Text>
-            </View>
+            </View> */}
             <ScrollView
                 style={styles.taskList}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             >
-                {project.Task.map((task, index) => {
+                {tasks.map((task, index) => {
                     return <TaskCard key={index} task={task} />;
                 })}
             </ScrollView>
