@@ -9,7 +9,7 @@ export default addProject = async ({
 }) => {
     console.log(Description);
     try {
-        const response = await fetch('http://192.168.45.57:3000' + '/projects', {
+        const response = await fetch(process.env.EXPO_PUBLIC_SERVER + '/projects', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

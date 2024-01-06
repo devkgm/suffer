@@ -3,7 +3,7 @@ import { Alert } from 'react-native';
 
 export default signIn = async (email, password) => {
     try {
-        const response = await fetch('http://192.168.45.57:3000/login', {
+        const response = await fetch(process.env.EXPO_PUBLIC_SERVER + '/login', {
             method: 'POST',
             mode: 'cors',
             headers: {

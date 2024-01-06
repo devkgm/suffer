@@ -53,10 +53,7 @@ export default App = () => {
         checkLoginStatus();
     }, []);
     useEffect(() => {
-        console.log(isLogin);
-        console.log(user);
         if (isLogin && user) {
-            console.log(isLogin, user);
             loadProject();
         }
     }, [isLogin, user]);

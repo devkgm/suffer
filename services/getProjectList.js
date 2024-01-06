@@ -3,7 +3,9 @@ export default getProjectList = async (user) => {
     const startTime = Date.now();
     let projectData = [];
     try {
-        const response = await fetch('http://192.168.45.57:3000/projects/list/' + user.info.ID);
+        const response = await fetch(
+            process.env.EXPO_PUBLIC_SERVER + '/projects/list/' + user.info.ID,
+        );
         projectData = await response.json();
         console.log(projectData);
     } catch (error) {

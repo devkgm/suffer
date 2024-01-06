@@ -5,7 +5,7 @@ export default getTask = async (projectId) => {
     let taskData = [];
 
     try {
-        const response = await fetch('http://192.168.45.57:3000/projects/' + projectId);
+        const response = await fetch(process.env.EXPO_PUBLIC_SERVER + '/projects/' + projectId);
         taskData = await response.json();
     } catch (error) {
         console.error(new Error(error));
