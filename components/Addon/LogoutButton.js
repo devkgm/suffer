@@ -14,8 +14,6 @@ export default LogoutButton = () => {
                 onPress: () => {
                     myAuthContext.setIsLogin(false);
                     myAuthContext.setUser(null);
-                    storeData('accessToken', null);
-                    storeData('refreshToken', null);
                     storeData('user', null);
                 },
             },

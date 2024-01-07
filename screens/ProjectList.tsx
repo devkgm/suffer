@@ -6,8 +6,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import MainContext from '../store/MainContext';
 import AuthContext from '../store/AuthContext';
+import getProjectList from '../services/getProjectList';
 
-export default ProjectList = ({ navigation }) => {
+const ProjectList = ({ navigation }) => {
     const [projects, setProjects] = useState([]);
     const myMainContext = useContext(MainContext);
     const myAuthContext = useContext(AuthContext);
@@ -30,9 +31,13 @@ export default ProjectList = ({ navigation }) => {
             <Text style={styles.title}>소속된 프로젝트</Text>
             <ScrollView style={styles.scrollContainer}>
                 <View style={styles.cardContainer}>
-                    {projects.map((project, index) => {
-                        return <ProjectCard key={index} project={project} />;
-                    })}
+                    {projects.length != 0 ? (
+                        projects.map((project, index) => {
+                            return <ProjectCard key={index} project={project} />;
+                        })
+                    ) : (
+                        <></>
+                    )}
                 </View>
             </ScrollView>
             <TouchableOpacity style={styles.addButton} onPress={() => handleAddButton()}>
@@ -76,3 +81,5 @@ const styles = StyleSheet.create({
         padding: 10,
     },
 });
+
+export default ProjectList;

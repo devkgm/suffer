@@ -1,29 +1,27 @@
-import { useContext, useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { StyleSheet } from 'react-native';
 import AuthNavigation from './navigation/AuthNavigation';
 import { NavigationContainer } from '@react-navigation/native';
 import HomeNavigation from './navigation/HomeNavigation';
-import getProjectList from './services/getProjectList';
 import Loading from './screens/Loading';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { getData } from './store/storage';
 import AuthContext from './store/AuthContext';
-export default App = () => {
-    const [isLogin, setIsLogin] = useState(false);
-    const [isLoaded, setIsLoaded] = useState(false);
-    const [user, setUser] = useState(null);
+import { User } from './model/user';
+
+export type Props = {
+    name: string;
+    baseEnthusiasmLevel?: number;
+};
+
+const App = () => {
+    const [isLogin, setIsLogin] = useState<boolean>(false);
+    const [isLoaded, setIsLoaded] = useState<boolean>(false);
+    const [user, setUser] = useState<User>(null);
     const [name, setName] = useState(null);
-    const [projects, setProjects] = useState([]);
     const [backgroundColor, setBackgroundColor] = useState('red');
     const myAuthContext = useContext(AuthContext);
-    // onAuthStateChanged(auth, (user) => {
-    //     console.log(user);
-    //     if (user) {
-    //         setIsLogin(true);
-    //     } else {
-    //         setIsLogin(false);
-    //     }
-    // });
+
     const auth = {
         user,
         isLogin,
@@ -32,47 +30,29 @@ export default App = () => {
         setIsLogin,
         setName,
     };
-    const value = {
-        projects,
-        setProjects,
-        setBackgroundColor,
-    };
-    const loadProject = async () => {
-        const project = await getProjectList(user);
-        // setProjects(project);
-        setIsLoaded(true);
-    };
+
     const checkLoginStatus = async () => {
-        const user = await getData('user');
-        if (user) {
+        // const user = await getData('user');
+        if (user != null) {
             setUser(user);
             setIsLogin(true);
+            setIsLoaded(true);
+        } else {
+            setIsLogin(false);
+            setIsLoaded(false);
         }
     };
     useEffect(() => {
         checkLoginStatus();
-    }, []);
-    useEffect(() => {
-        if (isLogin && user) {
-            loadProject();
-        }
-    }, [isLogin, user]);
+    }, [user]);
 
     return (
         <SafeAreaProvider>
-            {/* <View
-                style={[
-                    styles.topBackground,
-                    { backgroundColor: backgroundColor, paddingTop: topInset },
-                ]}
-            /> */}
             <AuthContext.Provider value={auth}>
-                <NavigationContainer style={styles.container}>
+                <NavigationContainer>
                     {isLogin ? isLoaded ? <HomeNavigation /> : <Loading /> : <AuthNavigation />}
                 </NavigationContainer>
             </AuthContext.Provider>
-
-            {/* <View style={styles.bottomBackground} /> */}
         </SafeAreaProvider>
     );
 };
@@ -101,3 +81,5 @@ const styles = StyleSheet.create({
         zIndex: -1,
     },
 });
+
+export default App;

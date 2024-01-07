@@ -13,7 +13,7 @@ export default Login = () => {
         if (user) {
             myAuthContext.setIsLogin(true);
             myAuthContext.setUser(user);
-            storeData('user', user);
+            await storeData('user', user);
         }
     };
 
