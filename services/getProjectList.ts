@@ -4,20 +4,19 @@ const getProjectList = async (user: User) => {
     console.log('getProject Start');
     const startTime = Date.now();
     let projectData = [];
-    console.log(user);
+    console.log(JSON.stringify(user));
     try {
         const response = await fetch(process.env.EXPO_PUBLIC_SERVER + '/projects/list/' + user.id, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
-                Authorization: JSON.stringify({
-                    accessToken: user.accessToken,
-                    refreshToken: user.refreshToken,
-                }),
+                'Content-Type': 'application/json; charset=utf-8',
+                authorization: `${user.refreshToken},${user.accessToken}`,
+                email: user.email,
             },
         });
-        projectData = await response.json();
-        console.log(projectData);
+        if (response.status == 200) {
+            projectData = await response.json();
+        }
     } catch (error) {
         console.error(new Error(error));
     }

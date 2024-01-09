@@ -32,7 +32,7 @@ const App = () => {
     };
 
     const checkLoginStatus = async () => {
-        // const user = await getData('user');
+        const user = await getData('user');
         if (user != null) {
             setUser(user);
             setIsLogin(true);

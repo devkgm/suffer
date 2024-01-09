@@ -6,12 +6,16 @@ import TaskCard from '../components/Task/TaskCard';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import MainContext from '../store/MainContext';
 import getTask from '../services/getTask';
+import AuthContext from '../store/AuthContext';
+import { Animated } from 'react-native';
 
 export default TaskList = ({ route, navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
     const { projectId, project } = route.params;
     const [tasks, setTasks] = useState([]);
     const myMainContext = useContext(MainContext);
+    const myAuthContext = useContext(AuthContext);
+
     const onRefresh = useCallback(() => {
         setRefreshing(true);
         // 데이터 새로고침 로직
@@ -20,7 +24,7 @@ export default TaskList = ({ route, navigation }) => {
         });
     }, []);
     const loadTasks = async () => {
-        const tasks = await getTask(projectId);
+        const tasks = await getTask(myAuthContext.user, projectId);
         setTasks(tasks);
     };
     const handleAddButton = () => {

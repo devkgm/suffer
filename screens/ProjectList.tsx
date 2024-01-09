@@ -24,6 +24,7 @@ const ProjectList = ({ navigation }) => {
     const loadProject = async () => {
         const project = await getProjectList(myAuthContext.user);
         setProjects(project);
+        console.log('loadProject');
     };
     return (
         <View style={styles.container}>
@@ -31,13 +32,9 @@ const ProjectList = ({ navigation }) => {
             <Text style={styles.title}>소속된 프로젝트</Text>
             <ScrollView style={styles.scrollContainer}>
                 <View style={styles.cardContainer}>
-                    {projects.length != 0 ? (
-                        projects.map((project, index) => {
-                            return <ProjectCard key={index} project={project} />;
-                        })
-                    ) : (
-                        <></>
-                    )}
+                    {projects.map((project, index) => {
+                        return <ProjectCard key={index} project={project} />;
+                    })}
                 </View>
             </ScrollView>
             <TouchableOpacity style={styles.addButton} onPress={() => handleAddButton()}>
