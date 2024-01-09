@@ -1,5 +1,4 @@
 import { User } from '../model/user';
-import getComment from './getComment';
 
 const getTask = async (user: User, projectId: number) => {
     console.log('getTask Start');
@@ -10,11 +9,9 @@ const getTask = async (user: User, projectId: number) => {
         const response = await fetch(process.env.EXPO_PUBLIC_SERVER + '/projects/' + projectId, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
-                Authorization: JSON.stringify({
-                    accessToken: user.accessToken,
-                    refreshToken: user.refreshToken,
-                }),
+                'Content-Type': 'application/json; charset=utf-8',
+                authorization: `${user.refreshToken},${user.accessToken}`,
+                email: user.email,
             },
         });
         taskData = await response.json();
