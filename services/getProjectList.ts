@@ -14,6 +14,9 @@ const getProjectList = async (user: User) => {
                 email: user.email,
             },
         });
+        if (response.headers.get('accessToken')) {
+            user.accessToken = response.headers.get('accessToken');
+        }
         if (response.status == 200) {
             projectData = await response.json();
         }
@@ -22,7 +25,7 @@ const getProjectList = async (user: User) => {
     }
     console.log('데이터 받아오기 실행 시간: ', Date.now() - startTime);
     console.log('getProject End');
-    return projectData;
+    return { projectData: projectData, user: user };
 };
 
 export default getProjectList;

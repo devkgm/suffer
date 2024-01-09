@@ -24,8 +24,9 @@ export default TaskList = ({ route, navigation }) => {
         });
     }, []);
     const loadTasks = async () => {
-        const tasks = await getTask(myAuthContext.user, projectId);
-        setTasks(tasks);
+        const { taskData, user } = await getTask(myAuthContext.user, projectId);
+        setTasks(taskData);
+        myAuthContext.setUser(user);
     };
     const handleAddButton = () => {
         // navigation.navigate('TaskCreate');

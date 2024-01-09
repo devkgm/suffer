@@ -1,5 +1,5 @@
 import { TouchableOpacity, Text, View, Alert } from 'react-native';
-import { storeData } from '../../store/storage';
+import { getData, storeData } from '../../store/storage';
 import { useContext } from 'react';
 import AuthContext from '../../store/AuthContext';
 import AddonStyles from '../../styles/AddonStyles';
@@ -11,10 +11,11 @@ export default LogoutButton = () => {
         Alert.alert('로그아웃', '로그아웃 하시겠습니까?', [
             {
                 text: '로그아웃',
-                onPress: () => {
+                onPress: async () => {
                     myAuthContext.setIsLogin(false);
                     myAuthContext.setUser(null);
-                    storeData('user', null);
+                    await storeData('user', null);
+                    console.log(await getData('user'));
                 },
             },
             { text: '취소', style: 'cancel' },

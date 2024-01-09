@@ -29,22 +29,25 @@ const App = () => {
         setUser,
         setIsLogin,
         setName,
+        isLoaded,
+        setIsLoaded,
     };
 
     const checkLoginStatus = async () => {
-        const user = await getData('user');
-        if (user != null) {
-            setUser(user);
+        const userDate = await getData('user');
+        console.log('update');
+        if (userDate == null) {
+            // setIsLoaded(false);
+            setIsLogin(false);
+        } else {
+            setUser(userDate);
             setIsLogin(true);
             setIsLoaded(true);
-        } else {
-            setIsLogin(false);
-            setIsLoaded(false);
         }
     };
     useEffect(() => {
         checkLoginStatus();
-    }, [user]);
+    }, [isLogin]);
 
     return (
         <SafeAreaProvider>

@@ -14,13 +14,16 @@ const getTask = async (user: User, projectId: number) => {
                 email: user.email,
             },
         });
+        if (response.headers['accessToken']) {
+            user.accessToken = response.headers['accessToken'];
+        }
         taskData = await response.json();
     } catch (error) {
         console.error(new Error(error));
     }
     console.log('데이터 받아오기 실행 시간: ', Date.now() - startTime);
     console.log('getTask End');
-    return taskData;
+    return { taskData: taskData, user: user };
 };
 
 export default getTask;

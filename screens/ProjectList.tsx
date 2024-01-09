@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import MainContext from '../store/MainContext';
 import AuthContext from '../store/AuthContext';
 import getProjectList from '../services/getProjectList';
+import { storeData } from '../store/storage';
 
 const ProjectList = ({ navigation }) => {
     const [projects, setProjects] = useState([]);
@@ -22,9 +23,12 @@ const ProjectList = ({ navigation }) => {
         }, []),
     );
     const loadProject = async () => {
-        const project = await getProjectList(myAuthContext.user);
-        setProjects(project);
-        console.log('loadProject');
+        console.log(myAuthContext.isLogin);
+        if (myAuthContext.isLogin) {
+            const { projectData, user } = await getProjectList(myAuthContext.user);
+            setProjects(projectData);
+            myAuthContext.setUser(user);
+        }
     };
     return (
         <View style={styles.container}>
