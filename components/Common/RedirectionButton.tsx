@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { TouchableWithoutFeedback, Text, View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default RedirectionButton = ({ placeholder, redirectPage, icon }) => {
+const RedirectionButton = ({ placeholder, redirectPage, icon }) => {
     const navigation = useNavigation();
     const handlePress = () => {
         navigation.navigate(redirectPage);
@@ -37,3 +37,4 @@ const style = StyleSheet.create({
         right: 20,
     },
 });
+export default RedirectionButton;

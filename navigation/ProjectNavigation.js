@@ -7,6 +7,7 @@ import EditDescription from '../screens/EditDescription';
 import OrderCreate from '../screens/OrderCreate';
 import ProjectCreate from '../screens/ProjectCreate';
 import ProjectContext from '../store/ProjectContext';
+import EditMember from '../screens/EditMember';
 
 const Stack = createStackNavigator();
 
@@ -14,12 +15,15 @@ const Stack = createStackNavigator();
 export default ProjectNavigation = ({ route }) => {
     const [member, setMember] = useState('');
     const [description, setDescription] = useState('');
+    const [selectedMember, setSelectedMember] = useState([]);
 
     const value = {
         description,
         setDescription,
         member,
         setMember,
+        selectedMember,
+        setSelectedMember,
     };
 
     return (
@@ -30,6 +34,7 @@ export default ProjectNavigation = ({ route }) => {
             >
                 <Stack.Screen name="ProjectCreate" component={ProjectCreate} />
                 <Stack.Screen name="EditDescription" component={EditDescription} />
+                <Stack.Screen name="EditMember" component={EditMember} />
             </Stack.Navigator>
         </ProjectContext.Provider>
     );

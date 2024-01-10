@@ -6,7 +6,7 @@ import ProjectContext from '../store/ProjectContext';
 import addProject from '../services/addProject';
 import AuthContext from '../store/AuthContext';
 
-export default function ProjectCreate({ route, navigation }) {
+const ProjectCreate = ({ route, navigation }) => {
     const [title, setTitle] = useState('');
     const inputRef1 = useRef(null);
     const inputRef2 = useRef(null);
@@ -26,6 +26,7 @@ export default function ProjectCreate({ route, navigation }) {
                 title: title,
                 owner_id: myAuthContext.user.id,
                 description: myContext.description,
+                members: myContext.selectedMember,
             },
         });
         navigation.goBack();
@@ -52,7 +53,11 @@ export default function ProjectCreate({ route, navigation }) {
                     ref={inputRef1}
                 />
                 <View style={styles.addCharge}>
-                    <RedirectionButton placeholder="팀원 추가" icon="user" />
+                    <RedirectionButton
+                        redirectPage="EditMember"
+                        placeholder="팀원 추가"
+                        icon="user"
+                    />
                 </View>
                 <View style={styles.addCharge}>
                     <RedirectionButton
@@ -67,7 +72,7 @@ export default function ProjectCreate({ route, navigation }) {
             </View>
         </TouchableWithoutFeedback>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -123,3 +128,5 @@ const styles = StyleSheet.create({
         padding: 10,
     },
 });
+
+export default ProjectCreate;
