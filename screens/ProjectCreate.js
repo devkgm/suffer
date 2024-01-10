@@ -22,8 +22,11 @@ export default function ProjectCreate({ route, navigation }) {
     const handleUpload = async () => {
         await addProject({
             user: myAuthContext.user,
-            Title: title,
-            Description: myContext.description,
+            project: {
+                title: title,
+                owner_id: myAuthContext.user.id,
+                description: myContext.description,
+            },
         });
         navigation.goBack();
     };

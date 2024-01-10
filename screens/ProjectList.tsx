@@ -23,7 +23,6 @@ const ProjectList = ({ navigation }) => {
         }, []),
     );
     const loadProject = async () => {
-        console.log(myAuthContext.isLogin + '프로젝트 로그인');
         const { projectData, user } = await getProjectList(myAuthContext.user);
         setProjects(projectData);
         await storeData('user', user);

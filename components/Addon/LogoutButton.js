@@ -15,7 +15,6 @@ export default LogoutButton = () => {
                     await storeData('user', null);
                     myAuthContext.setUser(null);
                     myAuthContext.setIsLogin(false);
-                    console.log(myAuthContext.isLogin + '로그아웃');
                 },
             },
             { text: '취소', style: 'cancel' },
