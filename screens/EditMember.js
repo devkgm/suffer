@@ -1,7 +1,6 @@
 import { SafeAreaView, View, TextInput } from 'react-native';
 import { useContext, useEffect, useState } from 'react';
 import TaskCreateHead from '../components/Common/CreateHead';
-import ProjectContext from '../store/ProjectContext';
 import getMembers from '../services/getMembers';
 import { storeData } from '../store/storage';
 import AuthContext from '../store/AuthContext';
@@ -10,22 +9,26 @@ import MemberCard from '../components/MemberCard';
 const EditMember = ({ route, navigation }) => {
     const [members, setMembers] = useState([]);
     const [selectedMember, setSelectedMember] = useState([]);
-    const myContext = useContext(ProjectContext);
     const myAuthContext = useContext(AuthContext);
     const rightHandler = () => {
-        myContext.setSelectedMember(selectedMember);
-        navigation.goBack();
+        navigation.navigate(route.params.fromScreen, {
+            fromScreen: 'EditMember',
+            selectedMember: selectedMember,
+        });
     };
     const loadMembers = async () => {
         const { memberData, user } = await getMembers(myAuthContext.user);
         setMembers(memberData);
-        console.log(memberData);
         await storeData('user', user);
         myAuthContext.setUser(user);
     };
     useEffect(() => {
         loadMembers();
     }, []);
+
+    useEffect(() => {
+        setSelectedMember(route.params?.selectedMember);
+    }, [route.params?.selectedMember]);
     const leftHandler = () => {
         navigation.goBack();
     };

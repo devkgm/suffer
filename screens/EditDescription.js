@@ -1,18 +1,21 @@
 import { SafeAreaView, View, TextInput } from 'react-native';
 import { useContext, useEffect, useState } from 'react';
 import TaskCreateHead from '../components/Common/CreateHead';
-import ProjectContext from '../store/ProjectContext';
+import { useNavigation } from '@react-navigation/native';
 
 export default EditDescription = ({ route, navigation }) => {
     const [description, setDescription] = useState('');
-    const myContext = useContext(ProjectContext);
     const rightHandler = () => {
-        myContext.setDescription(description);
-        navigation.goBack();
+        // navigation.goBack();
+        console.log(description);
+        navigation.navigate(route.params?.fromScreen, {
+            fromScreen: 'EditDescription',
+            description: description,
+        });
     };
     useEffect(() => {
-        setDescription(myContext.description);
-    }, []);
+        setDescription(route.params?.data);
+    }, [route.params?.data]);
     const leftHandler = () => {
         navigation.goBack();
     };

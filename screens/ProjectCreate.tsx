@@ -1,20 +1,30 @@
-import React, { useState, useContext, useRef } from 'react';
+import React, { useState, useContext, useRef, useEffect, useCallback } from 'react';
 import { StyleSheet, View, TextInput, TouchableWithoutFeedback, Text } from 'react-native';
 import TaskCreateHead from '../components/Common/CreateHead';
 import RedirectionButton from '../components/Common/RedirectionButton';
 import ProjectContext from '../store/ProjectContext';
 import addProject from '../services/addProject';
 import AuthContext from '../store/AuthContext';
+import { useFocusEffect, useRoute } from '@react-navigation/native';
 
 const ProjectCreate = ({ route, navigation }) => {
     const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [selectedMember, setSelectedMember] = useState([]);
     const inputRef1 = useRef(null);
-    const inputRef2 = useRef(null);
-    const myContext = useContext(ProjectContext);
     const myAuthContext = useContext(AuthContext);
     const handleBlur = () => {
         inputRef1.current.blur();
     };
+
+    useEffect(() => {
+        if (route.params.fromScreen == 'EditDescription')
+            setDescription(route.params?.description || '');
+    }, [route.params?.description]);
+    useEffect(() => {
+        if (route.params.fromScreen == 'EditMember')
+            setSelectedMember(route.params?.selectedMember || '');
+    }, [route.params?.selectedMember]);
 
     const handleCancle = () => {
         navigation.goBack();
@@ -25,8 +35,8 @@ const ProjectCreate = ({ route, navigation }) => {
             project: {
                 title: title,
                 owner_id: myAuthContext.user.id,
-                description: myContext.description,
-                members: myContext.selectedMember,
+                description: description,
+                members: selectedMember,
             },
         });
         navigation.goBack();
@@ -55,6 +65,8 @@ const ProjectCreate = ({ route, navigation }) => {
                 <View style={styles.addCharge}>
                     <RedirectionButton
                         redirectPage="EditMember"
+                        fromScreen="ProjectCreate"
+                        data={selectedMember}
                         placeholder="팀원 추가"
                         icon="user"
                     />
@@ -62,12 +74,14 @@ const ProjectCreate = ({ route, navigation }) => {
                 <View style={styles.addCharge}>
                     <RedirectionButton
                         placeholder="프로젝트에 대해 설명해주세요."
+                        fromScreen="ProjectCreate"
+                        data={description}
                         icon="pencil"
                         redirectPage="EditDescription"
                     />
                 </View>
                 <View>
-                    <Text style={styles.description}>{myContext.description}</Text>
+                    <Text style={styles.description}>{description}</Text>
                 </View>
             </View>
         </TouchableWithoutFeedback>

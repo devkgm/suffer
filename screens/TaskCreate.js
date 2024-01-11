@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 import { StyleSheet, View, TextInput, TouchableWithoutFeedback, Text } from 'react-native';
 import CreateHead from '../components/Common/CreateHead';
 import RedirectionButton from '../components/Common/RedirectionButton';
@@ -11,10 +11,19 @@ export default function TaskCreate({ route, navigation }) {
     const { projectId } = route.params;
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [seletedMember, setSelectedMember] = useState([]);
+
     const myAuthContext = useContext(AuthContext);
     const handleBlur = () => {
         inputRef1.current.blur();
     };
+
+    useEffect(() => {
+        if (route.params.fromScreen == 'EditDescription') setDescription(route.params.description);
+    }, [route.params?.description]);
+    useEffect(() => {
+        if (route.params.fromScreen == 'EditMember') setSelectedMember(route.params.seletedMember);
+    }, [route.params?.seletedMember]);
 
     const handleCancle = () => {
         navigation.goBack();
@@ -53,15 +62,21 @@ export default function TaskCreate({ route, navigation }) {
                     ref={inputRef1}
                 />
                 <View style={styles.addCharge}>
-                    <RedirectionButton placeholder="담당자 추가" icon="user" />
+                    <RedirectionButton
+                        redirectPage="EditMember"
+                        placeholder="담당자 추가"
+                        data={seletedMember}
+                        fromScreen="TaskCreate"
+                        icon="user"
+                    />
                 </View>
                 <View style={styles.addCharge}>
                     <RedirectionButton
                         placeholder="업무에 대해 설명해주세요."
                         icon="pencil"
                         redirectPage="EditDescription"
-                        setState={setDescription}
-                        getState={description}
+                        data={description}
+                        fromScreen="TaskCreate"
                     />
                 </View>
                 <View>
