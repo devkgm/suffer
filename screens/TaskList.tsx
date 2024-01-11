@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { RefreshControl } from 'react-native';
 import TaskCard from '../components/Task/TaskCard';
@@ -8,8 +8,9 @@ import MainContext from '../store/MainContext';
 import getTask from '../services/getTask';
 import AuthContext from '../store/AuthContext';
 import { Animated } from 'react-native';
+import { Separator } from 'react-native-btr';
 
-export default TaskList = ({ route, navigation }) => {
+const TaskList = ({ route, navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
     const { projectId, project } = route.params;
     const [tasks, setTasks] = useState([]);
@@ -19,7 +20,7 @@ export default TaskList = ({ route, navigation }) => {
     const onRefresh = useCallback(() => {
         setRefreshing(true);
         // 데이터 새로고침 로직
-        loadTasks(true).then(() => {
+        loadTasks().then(() => {
             setRefreshing(false);
         });
     }, []);
@@ -27,6 +28,7 @@ export default TaskList = ({ route, navigation }) => {
         const { taskData, user } = await getTask(myAuthContext.user, projectId);
         setTasks(taskData);
         myAuthContext.setUser(user);
+        console.log(taskData);
     };
     const handleAddButton = () => {
         // navigation.navigate('TaskCreate');
@@ -38,6 +40,12 @@ export default TaskList = ({ route, navigation }) => {
             loadTasks();
         }, []),
     );
+    const renderItem = ({ item, index }: any) => (
+        <View>
+            <TaskCard task={item} />
+        </View>
+    );
+    const keyExtractor = (item: any, index: number) => item.ID + index;
     return (
         <View style={styles.container}>
             <View style={[styles.header, { backgroundColor: project.CARD_COLOR }]}>
@@ -47,14 +55,12 @@ export default TaskList = ({ route, navigation }) => {
                 <Text style={styles.headerTitle}>{project.TITLE}</Text>
                 <Text style={styles.headerTitle}>{project.DESCRIPTION}</Text>
             </View>
-            <ScrollView
-                style={styles.taskList}
-                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-            >
-                {tasks.map((task, index) => {
-                    return <TaskCard key={index} task={task} />;
-                })}
-            </ScrollView>
+            <FlatList
+                data={tasks}
+                renderItem={renderItem}
+                keyExtractor={keyExtractor}
+                ItemSeparatorComponent={() => <Separator />}
+            />
             <View style={styles.inputContainer}>
                 <TouchableOpacity style={styles.sendButton} onPress={() => handleAddButton()}>
                     <Ionicons name="add" size={24} color="white" />
@@ -63,6 +69,7 @@ export default TaskList = ({ route, navigation }) => {
         </View>
     );
 };
+export default TaskList;
 
 const styles = StyleSheet.create({
     container: {
