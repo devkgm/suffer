@@ -2,7 +2,15 @@ import { useNavigation } from '@react-navigation/native';
 import { TouchableWithoutFeedback, Text, View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const RedirectionButton = ({ placeholder, redirectPage, icon, fromScreen, data }) => {
+export type Params = {
+    placeholder: string;
+    redirectPage: string;
+    icon: string;
+    fromScreen: string;
+    data: {};
+};
+
+const RedirectionButton = ({ placeholder, redirectPage, icon, fromScreen, data }: Params) => {
     const navigation = useNavigation();
     const handlePress = () => {
         navigation.navigate(redirectPage, { fromScreen: fromScreen, data: data });

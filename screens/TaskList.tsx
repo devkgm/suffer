@@ -9,6 +9,7 @@ import getTask from '../services/getTask';
 import AuthContext from '../store/AuthContext';
 import { Animated } from 'react-native';
 import { Separator } from 'react-native-btr';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const TaskList = ({ route, navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
@@ -49,11 +50,26 @@ const TaskList = ({ route, navigation }) => {
     return (
         <View style={styles.container}>
             <View style={[styles.header, { backgroundColor: project.CARD_COLOR }]}>
-                <TouchableOpacity activeOpacity={1} onPress={() => navigation.goBack()}>
-                    <Ionicons name="arrow-back" size={24} color="black" />
-                </TouchableOpacity>
-                <Text style={styles.headerTitle}>{project.TITLE}</Text>
+                <View style={styles.back}>
+                    <TouchableOpacity activeOpacity={1} onPress={() => navigation.goBack()}>
+                        <Ionicons name="arrow-back" size={24} color="black" />
+                    </TouchableOpacity>
+                    <Text style={styles.headerTitle}>{project.TITLE}</Text>
+                </View>
+
                 <Text style={styles.headerTitle}>{project.DESCRIPTION}</Text>
+                <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={() =>
+                        navigation.navigate('ProjectSetting', {
+                            fromScreen: 'TaskList',
+                            project: project,
+                            projectId: projectId,
+                        })
+                    }
+                >
+                    <Icon name="bars" size={24} color="black" />
+                </TouchableOpacity>
             </View>
             <FlatList
                 data={tasks}
@@ -83,12 +99,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         padding: 16,
+        justifyContent: 'space-between',
     },
     headerTitle: {
         fontSize: 20,
         fontWeight: 'bold',
         color: 'white',
         marginLeft: 8,
+    },
+    back: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     taskList: {
         flex: 1,

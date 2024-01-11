@@ -18,4 +18,18 @@ export default styles = StyleSheet.create({
     mlogo: {
         fontSize: 60,
     },
+    buttonContainer: {},
+    button: {
+        backgroundColor: 'white',
+        marginBottom: 1,
+        padding: 10,
+        height: 50,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+    },
+    buttonText: {
+        marginLeft: 5,
+        color: 'gray',
+    },
 });

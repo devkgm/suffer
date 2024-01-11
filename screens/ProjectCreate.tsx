@@ -18,11 +18,11 @@ const ProjectCreate = ({ route, navigation }) => {
     };
 
     useEffect(() => {
-        if (route.params.fromScreen == 'EditDescription')
+        if (route.params?.fromScreen == 'EditDescription')
             setDescription(route.params?.description || '');
     }, [route.params?.description]);
     useEffect(() => {
-        if (route.params.fromScreen == 'EditMember')
+        if (route.params?.fromScreen == 'EditMember')
             setSelectedMember(route.params?.selectedMember || '');
     }, [route.params?.selectedMember]);
 
