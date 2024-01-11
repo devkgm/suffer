@@ -59,6 +59,8 @@ const TaskList = ({ route, navigation }) => {
                 data={tasks}
                 renderItem={renderItem}
                 keyExtractor={keyExtractor}
+                onRefresh={onRefresh}
+                refreshing={refreshing}
                 ItemSeparatorComponent={() => <Separator />}
             />
             <View style={styles.inputContainer}>
@@ -77,6 +79,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#f0f0f0',
     },
     header: {
+        marginBottom: 5,
         flexDirection: 'row',
         alignItems: 'center',
         padding: 16,

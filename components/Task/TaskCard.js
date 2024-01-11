@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Comment from '../Comment';
+import TaskContent from './TaskContent';
 
 function TaskCard({ task }) {
-    const STATUS = ['요청', '완료'];
     let date = new Date(task.CREATE_DT).toLocaleString('ko-KR');
     return (
         <TouchableOpacity style={styles.container}>
@@ -12,15 +12,9 @@ function TaskCard({ task }) {
                     <Text style={styles.author}>{task.OWNER_ID}</Text>
                     <Text style={styles.date}>{date}</Text>
                 </View>
-
-                <TouchableOpacity style={styles.status}>
-                    <Text style={styles.statusFont}>{STATUS[task.STATUS]}</Text>
-                </TouchableOpacity>
             </View>
             <View style={styles.body}>
-                <Text style={styles.title}>{task.NAME}</Text>
-
-                <Text>{task.DESCRIPTION}</Text>
+                <TaskContent content={task} />
             </View>
             <View style={styles.comment}>
                 {task.comments ? (
@@ -37,22 +31,23 @@ function TaskCard({ task }) {
 
 const styles = StyleSheet.create({
     container: {
-        margin: 10,
-        borderRadius: 20,
         backgroundColor: '#fff',
-        padding: 16,
         borderBottomWidth: 1,
         borderBottomColor: '#ddd',
+        marginBottom: 5,
     },
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 10,
-        paddingBottom: 10,
+        padding: 16,
         borderBottomColor: 'lightgray',
         borderBottomWidth: 1,
     },
-    info: {},
+    info: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
     status: {
         height: 30,
         width: 50,

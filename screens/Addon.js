@@ -3,7 +3,7 @@ import TopNav from '../components/TopNav';
 import { useContext } from 'react';
 import AuthContext from '../store/AuthContext';
 import LogoutButton from '../components/Addon/LogoutButton';
-import Profile from '../components/Addon/Profile';
+import Profile from '../components/Common/Profile';
 import Drawer from '../components/Addon/Drawer';
 
 export default Addon = () => {
