@@ -11,6 +11,7 @@ const EditMember = ({ route, navigation }) => {
     const [selectedMember, setSelectedMember] = useState([]);
     const myAuthContext = useContext(AuthContext);
     const rightHandler = () => {
+        console.log('selected', selectedMember);
         navigation.navigate(route.params.fromScreen, {
             fromScreen: 'EditMember',
             selectedMember: selectedMember,

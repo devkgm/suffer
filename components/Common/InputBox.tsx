@@ -8,8 +8,7 @@ const InputBox = ({ title, data }) => {
     return (
         <View style={styles.container}>
             <View style={styles.title}>
-                <Icon name="spinner" size={24} color="black" />
-                <Text>{title}</Text>
+                <Text style={styles.titleText}>{title}</Text>
             </View>
 
             <TextInput style={styles.input} value={value} onChangeText={() => setValue(value)} />
@@ -23,16 +22,20 @@ const styles = StyleSheet.create({
         height: 50,
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 2,
     },
     title: {
         flexDirection: 'row',
         alignItems: 'center',
         padding: 10,
-        backgroundColor: '#f5f5f5',
+    },
+    titleText: {
+        fontSize: 18,
     },
     input: {
-        flex: 1,
         height: '100%',
+        margin: 20,
     },
 });
 

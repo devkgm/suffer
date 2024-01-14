@@ -46,7 +46,7 @@ const TaskList = ({ route, navigation }) => {
             <TaskCard task={item} />
         </View>
     );
-    const keyExtractor = (item: any, index: number) => item.ID + index;
+    const keyExtractor = (item: any, index: number) => item.ID + index + item.CREATE_DT;
     return (
         <View style={styles.container}>
             <View style={[styles.header, { backgroundColor: project.CARD_COLOR }]}>

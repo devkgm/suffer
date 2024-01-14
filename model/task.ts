@@ -1,6 +1,6 @@
-export type task = {
+export type Task = {
     title: string;
-    member: number[];
+    members: number[];
     description: {};
     owner_id: number;
     project_id: number;

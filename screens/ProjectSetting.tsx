@@ -47,7 +47,6 @@ const ProjectSetting = ({ route, navigation }) => {
                 <InputBox title="프로젝트명" data={project.TITLE} />
 
                 <TouchableOpacity style={CommonStyles.button} onPress={() => handleDelete()}>
-                    <Icon name="remove" size={16} color="#666" />
                     <Text style={[CommonStyles.buttonText, { color: 'red' }]}>프로젝트 삭제</Text>
                 </TouchableOpacity>
             </View>

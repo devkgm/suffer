@@ -11,7 +11,7 @@ export default function TaskCreate({ route, navigation }) {
     const { projectId } = route.params;
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [seletedMember, setSelectedMember] = useState([]);
+    const [selectedMember, setSelectedMember] = useState([]);
 
     const myAuthContext = useContext(AuthContext);
     const handleBlur = () => {
@@ -22,22 +22,23 @@ export default function TaskCreate({ route, navigation }) {
         if (route.params.fromScreen == 'EditDescription') setDescription(route.params.description);
     }, [route.params?.description]);
     useEffect(() => {
-        if (route.params.fromScreen == 'EditMember') setSelectedMember(route.params.seletedMember);
-    }, [route.params?.seletedMember]);
+        if (route.params.fromScreen == 'EditMember') setSelectedMember(route.params.selectedMember);
+    }, [route.params?.selectedMember]);
 
     const handleCancle = () => {
         navigation.goBack();
     };
     const handleUpload = async () => {
-        await addTask(
-            projectId,
-            myAuthContext.name,
-            myAuthContext.user.uid,
-            (Charge = []),
-            description,
-            (Status = 0),
-            title,
-        );
+        await addTask({
+            task: {
+                title: title,
+                members: selectedMember,
+                description: description,
+                owner_id: myAuthContext.user.id,
+                project_id: projectId,
+            },
+            user: myAuthContext.user,
+        });
         navigation.goBack();
     };
 
@@ -65,7 +66,7 @@ export default function TaskCreate({ route, navigation }) {
                     <RedirectionButton
                         redirectPage="EditMember"
                         placeholder="담당자 추가"
-                        data={seletedMember}
+                        data={selectedMember}
                         fromScreen="TaskCreate"
                         icon="user"
                     />
