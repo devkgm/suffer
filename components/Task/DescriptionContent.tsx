@@ -1,21 +1,20 @@
 import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
-import { orderContent } from '../../model/orderContent';
+import { descriptionContent } from '../../model/descriptionContent';
 
 export type Props = {
-    content: orderContent;
+    content: descriptionContent;
 };
 
-const OrderContent = ({ content }: Props) => {
+const DescriptionContent = ({ content }: Props) => {
     const STATUS = ['요청', '완료'];
 
     return (
         <TouchableOpacity style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.title}>발주</Text>
+                <Text style={styles.title}>업무</Text>
             </View>
             <View style={styles.body}>
-                <Text>품목: {content.product}</Text>
-                <Text>수량: {content.amount}</Text>
+                <Text> {content.description}</Text>
             </View>
         </TouchableOpacity>
     );
@@ -65,4 +64,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default OrderContent;
+export default DescriptionContent;

@@ -1,45 +1,82 @@
 import React, { useState, useContext, useRef, useEffect } from 'react';
-import { StyleSheet, View, TextInput, TouchableWithoutFeedback, Text } from 'react-native';
+import {
+    StyleSheet,
+    View,
+    TextInput,
+    TouchableWithoutFeedback,
+    Text,
+    TouchableOpacity,
+    Button,
+} from 'react-native';
 import CreateHead from '../components/Common/CreateHead';
 import RedirectionButton from '../components/Common/RedirectionButton';
 import addTask from '../services/addTask';
 import AuthContext from '../store/AuthContext';
+import { Ionicons } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import OrderContent from '../components/Task/OrderContent';
+import TaskContent from '../components/Task/TaskContent';
+import DescriptionContent from '../components/Task/DescriptionContent';
 
 export default function TaskCreate({ route, navigation }) {
     const inputRef1 = useRef(null);
     const inputRef2 = useRef(null);
+    const [showIcons, setShowIcons] = useState(false);
+    const [toggleIcon, setToggleIcon] = useState('add');
     const { projectId } = route.params;
     const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
+    const [description, setDescription] = useState([]);
     const [selectedMember, setSelectedMember] = useState([]);
+    const [body, setBody] = useState([]);
 
     const myAuthContext = useContext(AuthContext);
     const handleBlur = () => {
         inputRef1.current.blur();
     };
-
     useEffect(() => {
         if (route.params.fromScreen == 'EditDescription') setDescription(route.params.description);
     }, [route.params?.description]);
     useEffect(() => {
         if (route.params.fromScreen == 'EditMember') setSelectedMember(route.params.selectedMember);
     }, [route.params?.selectedMember]);
+    useEffect(() => {
+        if (route.params.fromScreen == 'OrderCreate') {
+            setDescription([...description, route.params.order]);
+        }
+    }, [route.params?.order]);
+    useEffect(() => {
+        console.log(route.params.description, route.params.description);
+        if (route.params.fromScreen == 'EditDescription') {
+            setDescription([...description, route.params.description]);
+        }
+    }, [route.params?.description]);
 
     const handleCancle = () => {
         navigation.goBack();
     };
+
     const handleUpload = async () => {
         await addTask({
             task: {
                 title: title,
                 members: selectedMember,
-                description: description,
+                description: JSON.stringify(description),
                 owner_id: myAuthContext.user.id,
                 project_id: projectId,
             },
             user: myAuthContext.user,
         });
         navigation.goBack();
+    };
+    const handleAddButton = () => {
+        setShowIcons(!showIcons);
+        setToggleIcon('delete');
+    };
+    const handleTaskButton = () => {
+        navigation.navigate('EditDescription', { fromScreen: 'TaskCreate' });
+    };
+    const handleOrderButton = () => {
+        navigation.navigate('OrderCreate', { fromScreen: 'TaskCreate' });
     };
 
     return (
@@ -71,7 +108,7 @@ export default function TaskCreate({ route, navigation }) {
                         icon="user"
                     />
                 </View>
-                <View style={styles.addCharge}>
+                {/* <View style={styles.addCharge}>
                     <RedirectionButton
                         placeholder="업무에 대해 설명해주세요."
                         icon="pencil"
@@ -79,10 +116,55 @@ export default function TaskCreate({ route, navigation }) {
                         data={description}
                         fromScreen="TaskCreate"
                     />
-                </View>
+                </View> */}
                 <View>
-                    <Text style={styles.description}>{description}</Text>
+                    {description.map((content) => {
+                        if (content.type == 'order') {
+                            return <OrderContent content={content} />;
+                        }
+                        if (content.type == 'description') {
+                            return <DescriptionContent content={content} />;
+                        }
+                    })}
                 </View>
+
+                {showIcons && (
+                    <View style={styles.hideButton}>
+                        <TouchableOpacity
+                            style={styles.taskButton}
+                            onPress={() => handleTaskButton()}
+                        >
+                            <Text
+                                style={{
+                                    color: 'white',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    lineHeight: 30,
+                                }}
+                            >
+                                업무
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.orderButton}
+                            onPress={() => handleOrderButton()}
+                        >
+                            <Text
+                                style={{
+                                    color: 'white',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    lineHeight: 30,
+                                }}
+                            >
+                                발주
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
+                <TouchableOpacity style={styles.addButton} onPress={() => handleAddButton()}>
+                    <Ionicons name="add" size={24} color="white" />
+                </TouchableOpacity>
             </View>
         </TouchableWithoutFeedback>
     );
@@ -139,6 +221,44 @@ const styles = StyleSheet.create({
     },
     description: {
         fontSize: 18,
+        padding: 10,
+    },
+    addButton: {
+        position: 'absolute',
+        right: 20,
+        bottom: 40,
+        width: 50,
+        height: 50,
+        backgroundColor: '#9A2AFF',
+        alignItems: 'center',
+        borderRadius: 16,
+        padding: 10,
+    },
+    hideButton: {
+        position: 'absolute',
+        right: 20,
+        bottom: 0,
+        width: 50,
+        backgroundColor: '#9A2AFF',
+    },
+    taskButton: {
+        position: 'absolute',
+        bottom: 160,
+        width: 50,
+        height: 50,
+        backgroundColor: '#9A2AFF',
+        alignItems: 'center',
+        borderRadius: 16,
+        padding: 10,
+    },
+    orderButton: {
+        position: 'absolute',
+        bottom: 100,
+        width: 50,
+        height: 50,
+        backgroundColor: '#9A2AFF',
+        alignItems: 'center',
+        borderRadius: 16,
         padding: 10,
     },
 });

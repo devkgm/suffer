@@ -29,7 +29,6 @@ const TaskList = ({ route, navigation }) => {
         const { taskData, user } = await getTask(myAuthContext.user, projectId);
         setTasks(taskData);
         myAuthContext.setUser(user);
-        console.log(taskData);
     };
     const handleAddButton = () => {
         navigation.navigate('TaskCreate');
@@ -46,7 +45,9 @@ const TaskList = ({ route, navigation }) => {
             <TaskCard task={item} />
         </View>
     );
-    const keyExtractor = (item: any, index: number) => item.ID + index + item.CREATE_DT;
+    const keyExtractor = (item: any, index: number) => {
+        return item.ID + index + item.CREATE_DT;
+    };
     return (
         <View style={styles.container}>
             <View style={[styles.header, { backgroundColor: project.CARD_COLOR }]}>

@@ -15,7 +15,10 @@ export default function OrderCreate({ route, navigation }) {
     };
     const handleUpload = async () => {
         // await addOrder(projectId, myAuthContext.name, myAuthContext.user.uid, product, amount);
-        navigation.goBack();
+        navigation.navigate(route.params.fromScreen, {
+            fromScreen: 'OrderCreate',
+            order: { product: product, amount: amount, type: 'order' },
+        });
     };
 
     return (

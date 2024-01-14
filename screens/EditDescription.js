@@ -10,7 +10,7 @@ export default EditDescription = ({ route, navigation }) => {
         console.log(description);
         navigation.navigate(route.params?.fromScreen, {
             fromScreen: 'EditDescription',
-            description: description,
+            description: { description: description, type: 'description' },
         });
     };
     useEffect(() => {

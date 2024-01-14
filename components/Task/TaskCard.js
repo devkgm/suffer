@@ -1,9 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Comment from '../Comment';
 import TaskContent from './TaskContent';
+import OrderContent from './OrderContent';
+import DescriptionContent from './DescriptionContent';
 
 function TaskCard({ task }) {
+    const [content, setContent] = useState([]);
+
+    useEffect(() => {
+        setContent(task.DESCRIPTION);
+    }, [task.DESCRIPTION]);
     let date = new Date(task.CREATE_DT).toLocaleString('ko-KR');
     return (
         <TouchableOpacity style={styles.container}>
@@ -14,7 +21,16 @@ function TaskCard({ task }) {
                 </View>
             </View>
             <View style={styles.body}>
-                <TaskContent content={task} />
+                {content.map((content) => {
+                    if (content.type == 'order') {
+                        return <OrderContent content={content} />;
+                    }
+                    if (content.type == 'description') {
+                        return <DescriptionContent content={content} />;
+                    }
+                })}
+
+                {/* <TaskContent content={task} /> */}
             </View>
             <View style={styles.comment}>
                 {task.comments ? (
