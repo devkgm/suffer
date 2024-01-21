@@ -9,15 +9,18 @@ const OrderContent = ({ content }: Props) => {
     const STATUS = ['요청', '완료'];
 
     return (
-        <TouchableOpacity style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.title}>발주</Text>
+                <TouchableOpacity style={styles.status}>
+                    <Text style={styles.statusFont}>{STATUS[content.status]}</Text>
+                </TouchableOpacity>
             </View>
             <View style={styles.body}>
                 <Text>품목: {content.product}</Text>
                 <Text>수량: {content.amount}</Text>
             </View>
-        </TouchableOpacity>
+        </View>
     );
 };
 
@@ -36,7 +39,9 @@ const styles = StyleSheet.create({
         padding: 16,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
-        justifyContent: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     title: {
         fontSize: 20,

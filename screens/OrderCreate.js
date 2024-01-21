@@ -17,7 +17,7 @@ export default function OrderCreate({ route, navigation }) {
         // await addOrder(projectId, myAuthContext.name, myAuthContext.user.uid, product, amount);
         navigation.navigate(route.params.fromScreen, {
             fromScreen: 'OrderCreate',
-            order: { product: product, amount: amount, type: 'order' },
+            order: { product: product, amount: amount, type: 'order', status: 0 },
         });
     };
 

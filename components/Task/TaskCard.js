@@ -4,29 +4,34 @@ import Comment from '../Comment';
 import TaskContent from './TaskContent';
 import OrderContent from './OrderContent';
 import DescriptionContent from './DescriptionContent';
+import { useNavigation } from '@react-navigation/native';
+import Profile from '../Common/Profile';
 
 function TaskCard({ task }) {
     const [content, setContent] = useState([]);
-
+    const navigation = useNavigation();
     useEffect(() => {
         setContent(task.DESCRIPTION);
     }, [task.DESCRIPTION]);
     let date = new Date(task.CREATE_DT).toLocaleString('ko-KR');
+
     return (
-        <TouchableOpacity style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.header}>
                 <View style={styles.info}>
-                    <Text style={styles.author}>{task.OWNER_ID}</Text>
+                    <Profile size={0.6} />
+                    {/* <Text style={styles.author}>{task.OWNER_ID}</Text>
+                    <Text style={styles.title}>{task.TITLE}</Text> */}
                     <Text style={styles.date}>{date}</Text>
                 </View>
             </View>
             <View style={styles.body}>
-                {content.map((content) => {
+                {content.map((content, index) => {
                     if (content.type == 'order') {
-                        return <OrderContent content={content} />;
+                        return <OrderContent content={content} key={index} />;
                     }
                     if (content.type == 'description') {
-                        return <DescriptionContent content={content} />;
+                        return <DescriptionContent content={content} key={index} />;
                     }
                 })}
 
@@ -41,7 +46,7 @@ function TaskCard({ task }) {
                     <></>
                 )}
             </View>
-        </TouchableOpacity>
+        </View>
     );
 }
 
@@ -56,7 +61,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 10,
-        padding: 16,
+        padding: 5,
         borderBottomColor: 'lightgray',
         borderBottomWidth: 1,
     },

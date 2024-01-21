@@ -7,10 +7,9 @@ export default EditDescription = ({ route, navigation }) => {
     const [description, setDescription] = useState('');
     const rightHandler = () => {
         // navigation.goBack();
-        console.log(description);
         navigation.navigate(route.params?.fromScreen, {
             fromScreen: 'EditDescription',
-            description: { description: description, type: 'description' },
+            description: { description: description, type: 'description', status: 0 },
         });
     };
     useEffect(() => {

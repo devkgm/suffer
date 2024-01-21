@@ -19,7 +19,7 @@ const ProjectCreate = ({ route, navigation }) => {
 
     useEffect(() => {
         if (route.params?.fromScreen == 'EditDescription')
-            setDescription(route.params?.description || '');
+            setDescription(route.params?.description.description || '');
     }, [route.params?.description]);
     useEffect(() => {
         if (route.params?.fromScreen == 'EditMember')

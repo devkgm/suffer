@@ -40,14 +40,22 @@ const TaskList = ({ route, navigation }) => {
             loadTasks();
         }, []),
     );
-    const renderItem = ({ item, index }: any) => (
-        <View>
-            <TaskCard task={item} />
-        </View>
-    );
+    const renderItem = ({ item, index }: any) => {
+        const handleOnPress = () => {
+            console.log('hello');
+            navigation.navigate('TaskDetail', { fromScreen: 'TaskList', description: item });
+        };
+        return (
+            <TouchableOpacity style={styles.container} onPress={() => handleOnPress()}>
+                <TaskCard task={item} />
+            </TouchableOpacity>
+        );
+    };
+
     const keyExtractor = (item: any, index: number) => {
         return item.ID + index + item.CREATE_DT;
     };
+
     return (
         <View style={styles.container}>
             <View style={[styles.header, { backgroundColor: project.CARD_COLOR }]}>

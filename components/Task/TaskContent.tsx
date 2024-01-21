@@ -11,13 +11,13 @@ const TaskContent = ({ content }: Props) => {
     return (
         <TouchableOpacity style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.title}>{content.TITLE}</Text>
+                <Text style={styles.title}>{content.title}</Text>
             </View>
             <View style={styles.body}>
                 <TouchableOpacity style={styles.status}>
-                    <Text style={styles.statusFont}>{STATUS[content.STATUS]}</Text>
+                    <Text style={styles.statusFont}>{STATUS[content.status]}</Text>
                 </TouchableOpacity>
-                <Text>{content.DESCRIPTION}</Text>
+                <Text>{content.description}</Text>
             </View>
         </TouchableOpacity>
     );
@@ -33,12 +33,12 @@ const styles = StyleSheet.create({
         shadowRadius: 2, // 그림자의 크기
     },
     header: {
-        flex: 1,
-        backgroundColor: '#f9f9f9',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 10,
         padding: 16,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        justifyContent: 'center',
+        borderBottomColor: 'lightgray',
+        borderBottomWidth: 1,
     },
     title: {
         fontSize: 20,

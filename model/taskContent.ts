@@ -1,6 +1,6 @@
 export type taskContent = {
-    TITLE: string;
-    STATUS: number;
+    title: string;
+    status: number;
     member: number[];
-    DESCRIPTION: string;
+    description: string;
 };
