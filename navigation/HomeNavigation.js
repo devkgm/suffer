@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import TabNavigation from './TabNavigation';
-import { TaskNavigation } from './TaskNavigation';
+import TaskNavigation from './TaskNavigation';
 import ProjectCreate from '../screens/ProjectCreate';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { View } from 'react-native';

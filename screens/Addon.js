@@ -11,7 +11,7 @@ export default Addon = () => {
     return (
         <View>
             <TopNav />
-            <Profile />
+            <Profile size={1} />
             <Drawer />
             <LogoutButton />
         </View>
