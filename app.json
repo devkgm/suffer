@@ -2,7 +2,7 @@
     "expo": {
         "name": "suffer-업무를 서핑하다",
         "slug": "suffer",
-        "version": "1.0.0",
+        "version": "1.0.1",
         "orientation": "portrait",
         "icon": "./assets/icon.png",
         "userInterfaceStyle": "light",

@@ -6,7 +6,7 @@ const getTask = async (user: User, projectId: number) => {
     let taskData = [];
 
     try {
-        const response = await fetch(process.env.EXPO_PUBLIC_SERVER + '/projects/' + projectId, {
+        const response = await fetch(process.env.EXPO_PUBLIC_API_URL + '/projects/' + projectId, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',

@@ -8,7 +8,7 @@ export type Props = {
 
 const addTask = async ({ task, user }) => {
     try {
-        const response = await fetch(process.env.EXPO_PUBLIC_SERVER + '/tasks', {
+        const response = await fetch(process.env.EXPO_PUBLIC_API_URL + '/tasks', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',

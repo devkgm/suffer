@@ -1,7 +1,7 @@
 const deleteProject = async (projectId, user) => {
     let result;
     try {
-        const response = await fetch(process.env.EXPO_PUBLIC_SERVER + '/projects/' + projectId, {
+        const response = await fetch(process.env.EXPO_PUBLIC_API_URL + '/projects/' + projectId, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',

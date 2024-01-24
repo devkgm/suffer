@@ -4,7 +4,7 @@ const getMembers = async (user: User) => {
     let memberData = [];
     try {
         const response = await fetch(
-            process.env.EXPO_PUBLIC_SERVER + '/company/members/' + user.company_id,
+            process.env.EXPO_PUBLIC_API_URL + '/company/members/' + user.company_id,
             {
                 method: 'GET',
                 headers: {

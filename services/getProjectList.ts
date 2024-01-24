@@ -6,14 +6,17 @@ const getProjectList = async (user: User) => {
     let projectData = [];
     console.log(JSON.stringify(user));
     try {
-        const response = await fetch(process.env.EXPO_PUBLIC_SERVER + '/projects/list/' + user.id, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json; charset=utf-8',
-                authorization: `${user.refreshToken},${user.accessToken}`,
-                email: user.email,
+        const response = await fetch(
+            process.env.EXPO_PUBLIC_API_URL + '/projects/list/' + user.id,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    authorization: `${user.refreshToken},${user.accessToken}`,
+                    email: user.email,
+                },
             },
-        });
+        );
         if (response.headers.get('accessToken')) {
             user.accessToken = response.headers.get('accessToken');
         }

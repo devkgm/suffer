@@ -4,7 +4,7 @@ import { Alert } from 'react-native';
 
 const signIn = async (email: string, password: string) => {
     try {
-        const response = await fetch(process.env.EXPO_PUBLIC_SERVER + '/login', {
+        const response = await fetch(process.env.EXPO_PUBLIC_API_URL + '/login', {
             method: 'POST',
             mode: 'cors',
             headers: {

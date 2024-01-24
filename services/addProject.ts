@@ -9,7 +9,7 @@ export type Props = {
 const addProject = async ({ project, user }) => {
     project.owner_id = user.id;
     try {
-        const response = await fetch(process.env.EXPO_PUBLIC_SERVER + '/projects', {
+        const response = await fetch(process.env.EXPO_PUBLIC_API_URL + '/projects', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
