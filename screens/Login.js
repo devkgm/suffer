@@ -10,6 +10,7 @@ export default Login = () => {
     const myAuthContext = useContext(AuthContext);
     const handleSubmit = async () => {
         const user = await signIn(email.trim(), password.trim());
+        console.log(user);
         if (user) {
             myAuthContext.setIsLogin(true);
             myAuthContext.setUser(user);

@@ -35,7 +35,7 @@ const App = () => {
 
     const checkLoginStatus = async () => {
         const userDate = await getData('user');
-        console.log('update');
+        console.log('update', userDate);
         if (userDate == null) {
             // setIsLoaded(false);
             setIsLogin(false);
